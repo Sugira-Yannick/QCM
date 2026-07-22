@@ -1,0 +1,484 @@
+<title>QCM Bloc 1 — Administrateur d'Infrastructures Sécurisées</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1413; --surface: #101c1b; --surface-2: #16211f;
+      --ink: #e7eeec; --ink-soft: #9fb0ac; --line: #24332f;
+      --accent: #3fc2b9; --accent-ink: #bff3ee; --accent-dim: #1c3a38;
+      --success: #4fbe7b; --success-dim: #16302170;
+      --danger: #e2685d; --danger-dim: #3a1c1970;
+      --warning: #e0ac55; --shadow: 0 12px 32px -16px rgba(0,0,0,.55);
+    }
+  }
+  :root {
+    --bg: #f3f6f4; --surface: #ffffff; --surface-2: #e9edeb;
+    --ink: #142221; --ink-soft: #526460; --line: #d9e1de;
+    --accent: #0e7c86; --accent-ink: #063c42; --accent-dim: #dcefee;
+    --success: #2e8b57; --success-dim: #e3f3e8;
+    --danger: #c1443b; --danger-dim: #fbe7e5;
+    --warning: #a3701f; --shadow: 0 12px 32px -18px rgba(20,40,38,.28);
+    --font-mono: ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+    --font-sans: "Segoe UI", "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1413; --surface: #101c1b; --surface-2: #16211f;
+    --ink: #e7eeec; --ink-soft: #9fb0ac; --line: #24332f;
+    --accent: #3fc2b9; --accent-ink: #bff3ee; --accent-dim: #1c3a38;
+    --success: #4fbe7b; --success-dim: #16302170;
+    --danger: #e2685d; --danger-dim: #3a1c1970;
+    --warning: #e0ac55; --shadow: 0 12px 32px -16px rgba(0,0,0,.55);
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f6f4; --surface: #ffffff; --surface-2: #e9edeb;
+    --ink: #142221; --ink-soft: #526460; --line: #d9e1de;
+    --accent: #0e7c86; --accent-ink: #063c42; --accent-dim: #dcefee;
+    --success: #2e8b57; --success-dim: #e3f3e8;
+    --danger: #c1443b; --danger-dim: #fbe7e5;
+    --warning: #a3701f; --shadow: 0 12px 32px -18px rgba(20,40,38,.28);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--font-sans);
+    line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .topbar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-top: 6px; padding-bottom: 10px; }
+  .linkbar { height: 6px; border-radius: 4px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--line); }
+  .linkbar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-ink)); transition: width .35s ease; }
+  .topmeta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); letter-spacing: .02em; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.15; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  h2 { font-size: 19px; margin: 0 0 10px; text-wrap: balance; }
+  p { color: var(--ink-soft); margin: 0 0 14px; }
+  strong { color: var(--ink); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); }
+  .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 18px 0 22px; }
+  @media (max-width: 520px) { .grid4 { grid-template-columns: 1fr; } }
+  .comp-tile { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--surface-2); }
+  .comp-tile .tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: .05em; }
+  .comp-tile .name { font-size: 13.5px; margin-top: 3px; color: var(--ink); }
+
+  button.primary {
+    font-family: var(--font-mono); font-size: 14px; letter-spacing: .02em; cursor: pointer;
+    background: var(--accent); color: var(--surface); border: none; border-radius: 9px;
+    padding: 13px 22px; box-shadow: var(--shadow);
+  }
+  button.primary:hover { filter: brightness(1.06); }
+  button.primary:focus-visible, button.ghost:focus-visible, .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.ghost {
+    font-family: var(--font-mono); font-size: 13px; cursor: pointer; background: transparent;
+    color: var(--ink-soft); border: 1px solid var(--line); border-radius: 9px; padding: 11px 18px;
+  }
+  button.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  .btnrow { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; padding: 4px 9px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface-2); text-transform: uppercase; }
+
+  .qhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .qnum { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .qtext { font-size: 17px; color: var(--ink); margin: 0 0 18px; text-wrap: balance; }
+
+  .opt { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; margin-bottom: 9px; cursor: pointer; font-family: var(--font-sans); font-size: 14.5px; color: var(--ink); transition: border-color .15s, background .15s; }
+  .opt:hover { border-color: var(--accent); }
+  .opt .letter { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 5px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; }
+  .opt.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .opt.correct { border-color: var(--success); background: var(--success-dim); }
+  .opt.incorrect { border-color: var(--danger); background: var(--danger-dim); }
+  .opt.correct .letter { border-color: var(--success); color: var(--success); }
+  .opt.incorrect .letter { border-color: var(--danger); color: var(--danger); }
+  .opt.disabled { cursor: default; }
+
+  .explain { display: none; margin-top: 4px; padding: 13px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); font-size: 13.5px; color: var(--ink-soft); }
+  .explain.show { display: block; }
+  .explain b { color: var(--ink); }
+
+  .scorewrap { display: flex; align-items: center; gap: 22px; margin-bottom: 20px; flex-wrap: wrap; }
+  .scoregauge { position: relative; width: 128px; height: 128px; flex: none; }
+  .scoregauge svg { transform: rotate(-90deg); }
+  .scoregauge .num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-mono); }
+  .scoregauge .num .val { font-size: 26px; font-variant-numeric: tabular-nums; }
+  .scoregauge .num .max { font-size: 11px; color: var(--ink-soft); }
+  .level-badge { font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; padding: 5px 11px; border-radius: 100px; display: inline-block; margin-bottom: 6px; }
+
+  .barrow { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .barrow .lbl { font-size: 13px; color: var(--ink); }
+  .barrow .track { height: 9px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .barrow .fill { height: 100%; border-radius: 6px; }
+  .barrow .pct { font-family: var(--font-mono); font-size: 12px; text-align: right; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+  @media (max-width: 560px) { .col2 { grid-template-columns: 1fr; } }
+  .verdict-box { border-radius: 12px; padding: 16px 17px; border: 1px solid var(--line); }
+  .verdict-box.good { background: var(--success-dim); border-color: var(--success); }
+  .verdict-box.bad { background: var(--danger-dim); border-color: var(--danger); }
+  .verdict-box .vt { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .verdict-box.good .vt { color: var(--success); }
+  .verdict-box.bad .vt { color: var(--danger); }
+  .verdict-box ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink); }
+  .verdict-box li { margin-bottom: 4px; }
+
+  .reviewfilters { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 16px; }
+  .filterbtn { font-family: var(--font-mono); font-size: 12px; padding: 7px 12px; border-radius: 100px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-soft); cursor: pointer; }
+  .filterbtn.active { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+
+  .reviewitem { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; background: var(--surface-2); }
+  .reviewitem.wrong { border-left: 3px solid var(--danger); }
+  .reviewitem.right { border-left: 3px solid var(--success); }
+  .reviewitem .rtop { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .reviewitem .rq { font-size: 14px; color: var(--ink); margin-bottom: 6px; }
+  .reviewitem .ryour { font-size: 13px; margin-bottom: 3px; }
+  .reviewitem .rcorrect { font-size: 13px; color: var(--success); margin-bottom: 6px; }
+  .reviewitem .rexp { font-size: 13px; color: var(--ink-soft); }
+
+  footer.note { margin-top: 26px; font-size: 12px; color: var(--ink-soft); font-family: var(--font-mono); }
+  .hidden { display: none !important; }
+</style>
+
+<div class="wrap">
+  <div class="topbar hidden" id="topbar">
+    <div class="linkbar"><span id="progressFill" style="width:0%"></span></div>
+    <div class="topmeta">
+      <span id="progressText">Question 0/50</span>
+      <span id="scoreLiveText">Score provisoire : 0</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 1 : BRIEFING -->
+  <section id="screenIntro">
+    <p class="eyebrow">RNCP 37680 · Niveau 6 · Titre professionnel</p>
+    <h1>QCM de révision — Bloc 1<br>Administrer et sécuriser les infrastructures</h1>
+    <p>50 questions construites à partir du référentiel officiel du Bloc&nbsp;1 et de vos supports de cours (réseaux Cisco, durcissement Debian, audit Lynis, stack EVE-NG/ELK, refonte du SI Ouzbek Global). Chaque question est rattachée à l'une des 4 compétences du bloc, pour repérer précisément vos points forts et vos lacunes avant l'épreuve.</p>
+
+    <div class="card">
+      <h2>Les 4 compétences évaluées</h2>
+      <div class="grid4">
+        <div class="comp-tile"><div class="tag">C1 · 13 questions</div><div class="name">Bonnes pratiques d'administration</div></div>
+        <div class="comp-tile"><div class="tag">C2 · 13 questions</div><div class="name">Infrastructures réseaux</div></div>
+        <div class="comp-tile"><div class="tag">C3 · 12 questions</div><div class="name">Infrastructures systèmes</div></div>
+        <div class="comp-tile"><div class="tag">C4 · 12 questions</div><div class="name">Infrastructures virtualisées</div></div>
+      </div>
+      <p style="margin-bottom:0">Une seule bonne réponse par question. Le corrigé et l'explication s'affichent immédiatement après votre choix — vous ne pouvez pas revenir en arrière, comme à l'oral. Comptez environ 25 minutes.</p>
+      <div class="btnrow">
+        <button class="primary" id="startBtn">Commencer le QCM →</button>
+      </div>
+    </div>
+    <footer class="note">Source : référentiel RNCP37680 BC01 (France Compétences) + supports de cours du répertoire de travail.</footer>
+  </section>
+
+  <!-- SCREEN 2 : QUIZ -->
+  <section id="screenQuiz" class="hidden">
+    <div class="card">
+      <div class="qhead">
+        <span class="chip" id="compChip">C1</span>
+        <span class="qnum" id="qNumLabel">Q1/50</span>
+      </div>
+      <p class="qtext" id="qText"></p>
+      <div id="optsWrap"></div>
+      <div class="explain" id="explainBox"></div>
+      <div class="btnrow">
+        <button class="primary" id="nextBtn" disabled>Question suivante →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 : RESULTS -->
+  <section id="screenResults" class="hidden">
+    <p class="eyebrow">Résultat</p>
+    <h1 id="resultsTitle">Bilan de votre passage blanc</h1>
+
+    <div class="card">
+      <div class="scorewrap">
+        <div class="scoregauge">
+          <svg width="128" height="128" viewBox="0 0 128 128">
+            <circle cx="64" cy="64" r="54" fill="none" stroke="var(--surface-2)" stroke-width="12"/>
+            <circle id="gaugeCircle" cx="64" cy="64" r="54" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="339" stroke-dashoffset="339"/>
+          </svg>
+          <div class="num"><span class="val" id="scoreVal">0</span><span class="max">/ 50</span></div>
+        </div>
+        <div>
+          <span class="level-badge" id="levelBadge">—</span>
+          <p id="levelDesc" style="margin:0; max-width:420px;"></p>
+        </div>
+      </div>
+
+      <h2>Score par compétence</h2>
+      <div id="compBars"></div>
+
+      <div class="col2">
+        <div class="verdict-box good">
+          <div class="vt">Points forts</div>
+          <ul id="strengthsList"></ul>
+        </div>
+        <div class="verdict-box bad">
+          <div class="vt">Points à consolider</div>
+          <ul id="weaknessesList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:30px;">Corrigé détaillé</h2>
+    <div class="reviewfilters" id="reviewFilters">
+      <button class="filterbtn active" data-f="all">Toutes (50)</button>
+      <button class="filterbtn" data-f="wrong">Erreurs</button>
+      <button class="filterbtn" data-f="C1">C1</button>
+      <button class="filterbtn" data-f="C2">C2</button>
+      <button class="filterbtn" data-f="C3">C3</button>
+      <button class="filterbtn" data-f="C4">C4</button>
+    </div>
+    <div id="reviewList"></div>
+
+    <div class="btnrow">
+      <button class="ghost" id="restartBtn">Recommencer un passage</button>
+    </div>
+    <footer class="note">Auto-évaluation générée localement dans votre navigateur — aucune donnée n'est envoyée.</footer>
+  </section>
+</div>
+
+<script>
+const COMP_NAMES = {
+  C1: "Bonnes pratiques d'administration",
+  C2: "Infrastructures réseaux",
+  C3: "Infrastructures systèmes",
+  C4: "Infrastructures virtualisées"
+};
+
+const QUESTIONS = [
+{comp:"C1", q:"Quel est l'ordre correct de la séquence de démarrage d'un équipement réseau Cisco ?", opts:["POST → Bootstrap (ROM) → chargement de l'IOS → application de la configuration","Bootstrap → POST → application de la configuration → chargement de l'IOS","Chargement de l'IOS → POST → Bootstrap → application de la configuration","POST → application de la configuration → Bootstrap → chargement de l'IOS"], correct:0, exp:"Le POST vérifie le matériel, le Bootstrap (dans la ROM) localise l'IOS (Flash, sinon TFTP, sinon ROMmon), puis la configuration (startup-config en NVRAM) est chargée en dernier."},
+{comp:"C1", q:"Lors de l'audit Lynis d'un serveur Debian 13 de production, l'indice de durcissement (\"hardening index\") obtenu était de 72/100, avec 0 avertissement et 37 suggestions. Que signifie un \"warning\" à 0 dans ce contexte ?", opts:["Qu'aucune non-conformité bloquante n'a été détectée, seulement des pistes d'amélioration","Que le serveur est parfaitement sécurisé et ne nécessite plus aucune action","Que Lynis n'a exécuté aucun test de sécurité sur la machine","Que le pare-feu est désactivé"], correct:0, exp:"Un score de 0 warning signifie l'absence de non-conformité critique détectée par Lynis ; les 37 suggestions restent des axes d'amélioration non bloquants (ex. chiffrement de /mnt/data, mot de passe GRUB)."},
+{comp:"C1", q:"Dans /etc/ssh/sshd_config d'un serveur durci en production, laquelle de ces directives correspond à une bonne pratique ?", opts:["PermitRootLogin no", "PasswordAuthentication yes", "X11Forwarding yes", "MaxAuthTries 20"], correct:0, exp:"Interdire la connexion root en direct oblige à passer par un compte nominatif puis sudo, ce qui améliore la traçabilité. Le mot de passe doit être désactivé au profit des clés, X11Forwarding désactivé, et MaxAuthTries abaissé (souvent à 3)."},
+{comp:"C1", q:"Une politique PAM impose pam_pwquality.so retry=3 minlen=12 difok=3. Quel est l'objectif de minlen=12 ?", opts:["Exiger une longueur minimale de 12 caractères pour tout nouveau mot de passe","Limiter le mot de passe à 12 caractères maximum","Autoriser 12 tentatives de connexion avant blocage","Renouveler le mot de passe tous les 12 jours"], correct:0, exp:"minlen fixe la longueur minimale exigée (ici 12 caractères), conforme aux recommandations ANSSI/NIST actuelles contre les mots de passe faibles."},
+{comp:"C1", q:"Un serveur définit 4 groupes sudo distincts (admin, user-mgmt, pwd-reset, auditor) avec des droits différents plutôt qu'un accès root unique partagé. Quel principe de sécurité cela illustre-t-il ?", opts:["Le principe du moindre privilège", "Le principe de défense en profondeur uniquement", "L'authentification multifacteur", "La ségrégation réseau par VLAN"], correct:0, exp:"Segmenter les droits d'administration par rôle métier (gestion des comptes, reset de mot de passe, audit) applique le principe du moindre privilège : chacun n'a que les droits nécessaires à sa fonction."},
+{comp:"C1", q:"La commande `chage -M 90 -m 7 -W 14 utilisateur` configure quoi ?", opts:["Une durée de validité de 90 jours, un délai minimal de 7 jours entre deux changements, et un avertissement 14 jours avant expiration","Un verrouillage du compte après 90 tentatives échouées","Un mot de passe d'au moins 90 caractères","Une expiration du compte dans 7 jours"], correct:0, exp:"chage gère le vieillissement des mots de passe : -M (max), -m (min), -W (warning). Ici : validité 90 jours, 7 jours minimum entre deux changements, avertissement 14 jours avant expiration."},
+{comp:"C1", q:"La stratégie de sauvegarde \"3-2-1-1-0\" appliquée dans le projet de refonte du SI signifie :", opts:["3 copies des données, sur 2 supports différents, dont 1 hors site, dont 1 hors ligne/immuable, avec 0 erreur de restauration vérifiée","3 sauvegardes par jour, sur 2 serveurs, avec 1 heure de rétention, 1 seul opérateur, 0 chiffrement","3 ans de rétention, 2 datacenters, 1 fournisseur, 1 protocole, 0 sauvegarde incrémentale","3 copies chiffrées, 2 fois par semaine, 1 clé, 1 algorithme, 0 test"], correct:0, exp:"La règle 3-2-1-1-0 étend la classique 3-2-1 : 3 copies, 2 supports, 1 externalisée, 1 copie immuable/hors ligne (protection anti-ransomware), et 0 erreur constatée lors des tests de restauration."},
+{comp:"C1", q:"Fail2ban est configuré avec maxretry=3 et bantime=3600 sur le port SSH. Quel est son rôle ?", opts:["Bannir temporairement une adresse IP après un nombre défini d'échecs d'authentification, pour contrer le brute force","Chiffrer les sessions SSH entre le client et le serveur","Remplacer l'authentification par clé publique","Filtrer les paquets entrants au niveau du noyau comme un pare-feu applicatif"], correct:0, exp:"Fail2ban surveille les logs, détecte les tentatives répétées échouées (ici 3) et bannit l'IP source pendant la durée définie (ici 1h) — une défense contre le brute force, complémentaire au pare-feu."},
+{comp:"C1", q:"Dans le modèle AAA utilisé pour sécuriser l'administration d'une infrastructure, que désigne le 3ᵉ \"A\" (Accounting) ?", opts:["La traçabilité des actions effectuées par un utilisateur authentifié et autorisé", "La vérification de l'identité de l'utilisateur", "L'attribution des droits d'accès à une ressource", "Le chiffrement des échanges d'authentification"], correct:0, exp:"AAA = Authentification (qui êtes-vous) / Autorisation (qu'avez-vous le droit de faire) / Accounting-Traçabilité (que s'est-il passé, journalisé à des fins d'audit)."},
+{comp:"C1", q:"Avant de déployer un correctif de sécurité critique sur un serveur de production, quelle est la bonne pratique d'administration à respecter ?", opts:["Le tester dans un environnement de pré-production et suivre une procédure de gestion du changement avant application","L'appliquer immédiatement en production sans test, pour réduire au maximum la fenêtre de vulnérabilité","Attendre la prochaine version majeure du système d'exploitation","Désactiver la supervision pendant l'application pour éviter les fausses alertes"], correct:0, exp:"La gestion du changement (change management) impose de valider un correctif hors production avant sa mise en œuvre, afin d'éviter une régression ou une indisponibilité non maîtrisée."},
+{comp:"C1", q:"Quelle différence fondamentale distingue un outil de supervision (Prometheus/Grafana) d'une solution de centralisation de journaux (stack ELK) ?", opts:["La supervision mesure et alerte sur des métriques en quasi temps réel, tandis que la centralisation de logs collecte, indexe et permet d'analyser des événements textuels", "Il n'existe aucune différence, ce sont deux noms pour le même usage", "La supervision ne fonctionne que sur des équipements réseau, jamais sur des serveurs", "La centralisation de logs remplace entièrement la nécessité d'un pare-feu"], correct:0, exp:"Prometheus/Grafana collectent des métriques numériques (CPU, RAM, latence) pour alerter en temps réel ; ELK indexe des journaux d'événements pour la recherche, la corrélation et l'investigation a posteriori. Les deux sont complémentaires."},
+{comp:"C1", q:"Dans le durcissement noyau via sysctl (/etc/sysctl.d/99-hardening.conf), le paramètre net.ipv4.tcp_syncookies=1 sert à :", opts:["Protéger le serveur contre les attaques par inondation SYN (SYN flood)", "Activer le routage IPv4 entre interfaces", "Chiffrer le trafic TCP", "Augmenter la taille maximale des paquets TCP"], correct:0, exp:"Les SYN cookies permettent au noyau de répondre aux demandes de connexion sans réserver de ressources tant que la connexion n'est pas confirmée, ce qui atténue les attaques par saturation de la file d'attente TCP (SYN flood)."},
+{comp:"C1", q:"Un rapport d'audit Lynis distingue les \"warnings\" des \"suggestions\". Quelle affirmation est correcte ?", opts:["Un warning signale une non-conformité jugée plus impactante qu'une simple suggestion d'amélioration", "Les suggestions sont toujours plus critiques que les warnings", "Warnings et suggestions désignent exactement la même chose", "Seules les suggestions nécessitent une action corrective"], correct:0, exp:"Les warnings pointent des points jugés plus sensibles (ex. permissions incorrectes sur un fichier sensible) tandis que les suggestions sont des pistes de renforcement non bloquantes."},
+
+{comp:"C2", q:"Sur un port trunk 802.1Q, à quoi correspond le VLAN natif ?", opts:["Le VLAN dont les trames circulent sans étiquette (tag) sur le lien trunk", "Le VLAN de gestion utilisé pour administrer le commutateur à distance", "Le premier VLAN créé sur le commutateur", "Le VLAN réservé aux flux vocaux (voix sur IP)"], correct:0, exp:"Le VLAN natif transporte le trafic non étiqueté sur un trunk 802.1Q ; il doit être identique aux deux extrémités du lien mais est indépendant du VLAN de gestion — une confusion fréquente à l'examen."},
+{comp:"C2", q:"Dans une trame 802.1Q, sur combien de bits est codé le VID (VLAN Identifier), et quelle est la plage utilisable ?", opts:["12 bits, de 1 à 4094", "8 bits, de 1 à 254", "16 bits, de 1 à 65534", "4 bits, de 1 à 14"], correct:0, exp:"Le tag 802.1Q fait 4 octets (TPID 0x8100 + PCP + DEI + VID). Le VID est codé sur 12 bits, soit une plage théorique de 0 à 4095, avec 0 et 4095 réservés — la plage utilisable est donc 1-4094."},
+{comp:"C2", q:"Quelle est la différence entre `switchport trunk allowed vlan 30` et `switchport trunk allowed vlan add 30` ?", opts:["La première remplace la liste des VLAN autorisés, la seconde y ajoute le VLAN 30", "Les deux commandes sont strictement équivalentes", "La première configure un port en mode access, la seconde en mode trunk", "La seconde supprime le VLAN 30 de la liste autorisée"], correct:0, exp:"Sans le mot-clé `add`, la commande remplace intégralement la liste des VLAN autorisés sur le trunk — une erreur classique qui coupe accidentellement d'autres VLAN déjà autorisés."},
+{comp:"C2", q:"Quels sont, dans l'ordre, les timers par défaut du Spanning Tree Protocol (802.1D) : Hello, Forward Delay et Max Age ?", opts:["2 s, 15 s, 20 s", "5 s, 30 s, 60 s", "1 s, 10 s, 15 s", "10 s, 45 s, 90 s"], correct:0, exp:"BPDU Hello toutes les 2 s, Forward Delay de 15 s (traversé deux fois : Listening puis Learning, soit 30 s), et Max Age de 20 s — d'où la convergence classique de STP en 30 à 50 secondes, contre quelques centaines de ms pour RSTP (802.1w)."},
+{comp:"C2", q:"Un port configuré en PortFast reçoit une BPDU. Avec BPDU Guard activé, que se passe-t-il ?", opts:["Le port passe en état err-disabled (désactivé) pour prévenir une boucle accidentelle", "Le port ignore simplement la BPDU et continue de fonctionner normalement", "Le port devient automatiquement Root Port", "Le commutateur redémarre le processus STP sur tout le VLAN"], correct:0, exp:"PortFast est réservé aux ports d'hôtes terminaux qui ne doivent jamais recevoir de BPDU. BPDU Guard désactive (err-disabled) tout port PortFast qui en reçoit une, car cela signale un raccordement anormal (switch non autorisé, boucle)."},
+{comp:"C2", q:"En LACP (IEEE 802.1AX/802.3ad), quelle combinaison de modes entre deux commutateurs échoue à former un EtherChannel ?", opts:["passive + passive", "active + active", "active + passive", "on + on"], correct:0, exp:"En LACP, au moins un des deux côtés doit initier activement la négociation : active+active et active+passive fonctionnent, mais passive+passive ne négocie jamais rien (aucun des deux ne prend l'initiative). C'est l'équivalent de auto+auto en PAgP, qui échoue aussi."},
+{comp:"C2", q:"Dans le processus DHCPv4 DORA, à quel message correspond l'étape où le client diffuse une requête pour trouver un serveur DHCP disponible ?", opts:["DHCPDISCOVER", "DHCPOFFER", "DHCPREQUEST", "DHCPACK"], correct:0, exp:"DORA = Discover (client, broadcast depuis 0.0.0.0) → Offer (serveur propose une IP) → Request (client confirme) → Ack (serveur valide le bail). Les échanges utilisent UDP 67 (serveur) / UDP 68 (client)."},
+{comp:"C2", q:"Pour un bail DHCPv4 standard, à quel moment le client tente-t-il de renouveler son adresse en unicast auprès du serveur d'origine (timer T1) ?", opts:["À 50 % de la durée du bail", "À 25 % de la durée du bail", "À 87,5 % de la durée du bail", "Uniquement à l'expiration totale du bail"], correct:0, exp:"T1 (renouvellement, unicast vers le serveur d'origine) intervient à 50 % du bail ; T2 (rebinding, broadcast vers n'importe quel serveur) à 87,5 % ; à 100 %, le bail expire et l'adresse est perdue."},
+{comp:"C2", q:"Entre HSRP et VRRP, quelle affirmation est exacte ?", opts:["VRRP (RFC 5798) active la préemption par défaut, contrairement à HSRP (Cisco) où elle est désactivée par défaut", "HSRP est un standard IETF ouvert, tandis que VRRP est propriétaire Cisco", "VRRP répartit nativement la charge entre plusieurs routeurs, contrairement à GLBP", "HSRP et VRRP utilisent tous deux le protocole IP 112"], correct:0, exp:"HSRP est propriétaire Cisco (UDP 1985, multicast 224.0.0.2) et n'active pas la préemption par défaut ; VRRP est un standard IETF (protocole IP 112, multicast 224.0.0.18) qui préempte par défaut. Ni l'un ni l'autre ne fait de répartition de charge native — c'est le rôle de GLBP."},
+{comp:"C2", q:"Classez ces distances administratives Cisco de la plus fiable (la plus basse) à la moins fiable : réseau connecté, route statique, OSPF, RIP.", opts:["Connecté (0) < Statique (1) < OSPF (110) < RIP (120)", "RIP (120) < OSPF (110) < Statique (1) < Connecté (0)", "Statique (1) < Connecté (0) < RIP (120) < OSPF (110)", "Connecté (0) < OSPF (110) < Statique (1) < RIP (120)"], correct:0, exp:"Plus la distance administrative est basse, plus la source est jugée fiable : Connecté=0, Statique=1, OSPF=110, RIP=120. En cas de routes concurrentes vers une même destination, la DA la plus basse l'emporte."},
+{comp:"C2", q:"Quelle affirmation décrit correctement le mécanisme Port Security sur un commutateur ?", opts:["Il limite/valide les adresses MAC autorisées sur un port, mais ne protège pas contre l'usurpation d'adresse IP", "Il empêche toute usurpation d'adresse IP sur le réseau local", "Il chiffre automatiquement le trafic sur le port concerné", "Il remplace DHCP Snooping et l'inspection ARP dynamique (DAI)"], correct:0, exp:"Port Security agit uniquement au niveau des adresses MAC (apprentissage, limitation, violation → shutdown/restrict/protect). La protection contre l'usurpation IP relève d'IP Source Guard, et contre l'usurpation ARP, de DAI — ce sont des mécanismes complémentaires, pas équivalents."},
+{comp:"C2", q:"Dans une architecture Wi-Fi avec contrôleur (WLC) et points d'accès légers, sur quels ports circule le tunnel CAPWAP entre l'AP et le WLC ?", opts:["UDP 5246 (contrôle) et UDP 5247 (données)", "TCP 5246 et TCP 5247", "UDP 67 et UDP 68", "TCP 443 uniquement, en HTTPS"], correct:0, exp:"CAPWAP établit deux canaux UDP distincts entre l'AP léger et le contrôleur : 5246 pour le plan de contrôle (management) et 5247 pour le plan de données, avec DTLS optionnel pour le chiffrement."},
+{comp:"C2", q:"Un pare-feu segmente une infrastructure en 4 zones (WAN, LAN, SRV, DMZ) sans utiliser de VLAN, uniquement par une matrice de flux L3. La règle \"SRV → LAN bloqué\" et \"DMZ → LAN bloqué\" illustre quel objectif de sécurité réseau ?", opts:["Empêcher un rebond (pivot) d'un serveur ou d'un service exposé vers le réseau des postes utilisateurs en cas de compromission", "Autoriser tout le trafic sortant sans restriction pour simplifier l'administration", "Remplacer l'authentification des utilisateurs par un simple filtrage d'adresses IP", "Garantir que la DMZ dispose d'un accès total à l'Annuaire Active Directory du LAN"], correct:0, exp:"Bloquer les flux retour depuis les zones SRV/DMZ vers le LAN applique le principe de moindre privilège et limite le mouvement latéral : si un serveur exposé (SRV) ou public (DMZ) est compromis, l'attaquant ne peut pas directement rebondir vers les postes utilisateurs."},
+
+{comp:"C3", q:"Quel est le rôle principal du service Active Directory Domain Services (AD DS) dans une infrastructure Windows Server ?", opts:["Centraliser l'annuaire des identités (utilisateurs, groupes, machines) et l'authentification via Kerberos au sein d'un domaine", "Attribuer dynamiquement des adresses IP aux postes clients", "Chiffrer les disques des serveurs membres du domaine", "Superviser les performances CPU et mémoire des serveurs"], correct:0, exp:"AD DS est l'annuaire centralisé qui stocke les objets du domaine (comptes, groupes, ordinateurs, stratégies) et authentifie via le protocole Kerberos, socle de la gestion centralisée des identités en environnement Windows."},
+{comp:"C3", q:"À quoi sert une stratégie de groupe (GPO) dans un domaine Active Directory ?", opts:["Appliquer de façon centralisée des règles de configuration et de sécurité à des ensembles d'utilisateurs ou d'ordinateurs", "Créer de nouveaux comptes utilisateurs automatiquement", "Remplacer le service DNS du domaine", "Chiffrer les communications entre contrôleurs de domaine"], correct:0, exp:"Une GPO (Group Policy Object) permet de déployer et faire respecter des paramètres (mots de passe, restrictions, déploiements logiciels...) sur des unités d'organisation entières, sans intervention poste par poste."},
+{comp:"C3", q:"Pourquoi le service DNS est-il un composant indispensable au bon fonctionnement d'un domaine Active Directory ?", opts:["Parce que la localisation des contrôleurs de domaine et des services (via des enregistrements SRV) repose sur DNS", "Parce que DNS chiffre les mots de passe stockés dans l'annuaire", "Parce que DNS attribue les adresses IP des postes clients à la place de DHCP", "Parce que DNS remplace Kerberos pour l'authentification"], correct:0, exp:"Les clients et serveurs localisent les contrôleurs de domaine et les services associés (LDAP, Kerberos...) grâce à des enregistrements SRV DNS spécifiques ; sans DNS correctement intégré, l'authentification et la réplication AD échouent."},
+{comp:"C3", q:"Sur un volume chiffré avec LUKS2 (cryptsetup) puis géré par LVM, quelle affirmation est correcte concernant un serveur Debian de production ?", opts:["La partition /boot ne peut généralement pas être chiffrée par LUKS de la même façon que le reste du système, car le chargeur de démarrage doit pouvoir y accéder avant le déverrouillage", "LUKS2 utilise par défaut un chiffrement plus faible que LUKS1", "LVM empêche techniquement l'usage de LUKS sur les volumes qu'il gère", "Le chiffrement LUKS ne protège que les données en transit sur le réseau"], correct:0, exp:"C'est une limite connue et testée en audit (Lynis) : /boot reste généralement en clair car GRUB doit pouvoir lire le noyau avant que le mot de passe de déverrouillage LUKS ne soit saisi, contrairement aux partitions applicatives (/, /var, /srv) qui peuvent être entièrement chiffrées (AES-XTS par défaut sous LUKS2)."},
+{comp:"C3", q:"Quelle commande systemd permet de faire en sorte qu'un service démarre automatiquement au prochain redémarrage du serveur, sans le démarrer immédiatement ?", opts:["systemctl enable <service>", "systemctl start <service>", "systemctl status <service>", "systemctl mask <service>"], correct:0, exp:"`enable` crée le lien symbolique nécessaire pour que le service démarre au boot, sans le lancer immédiatement (il faut `start` pour cela). `mask` interdit totalement le démarrage du service, même manuel."},
+{comp:"C3", q:"Pourquoi configurer `bind-address=127.0.0.1` sur un serveur MariaDB hébergeant la base d'une application interne ?", opts:["Pour restreindre l'écoute du service aux connexions locales et réduire la surface d'exposition réseau", "Pour accélérer les requêtes SQL en supprimant l'authentification", "Pour permettre les connexions depuis n'importe quelle adresse IP externe", "Pour activer la réplication maître-esclave automatiquement"], correct:0, exp:"Lier le service à l'adresse de loopback empêche toute connexion directe depuis le réseau ; seules les applications locales (ou passant par un tunnel/proxy applicatif) peuvent atteindre la base, ce qui réduit fortement la surface d'attaque."},
+{comp:"C3", q:"Dans une chaîne de messagerie sécurisée en DMZ associant Postfix, ClamAV et SpamAssassin, quel est le rôle de ClamAV ?", opts:["Analyser les messages à la recherche de logiciels malveillants (antivirus)", "Filtrer le courrier indésirable selon un score de spam", "Relayer les messages sortants vers Internet", "Chiffrer les échanges SMTP en TLS"], correct:0, exp:"Postfix relaie les messages, ClamAV agit comme moteur antivirus sur le contenu et les pièces jointes, et SpamAssassin note et filtre les messages selon des critères anti-spam — trois fonctions complémentaires dans la chaîne de traitement du courrier."},
+{comp:"C3", q:"Quels ports sont associés respectivement au protocole IMAP (non chiffré) et à sa variante chiffrée IMAPS ?", opts:["143 (IMAP) et 993 (IMAPS)", "110 (IMAP) et 995 (IMAPS)", "25 (IMAP) et 465 (IMAPS)", "21 (IMAP) et 990 (IMAPS)"], correct:0, exp:"IMAP utilise le port 143 en clair et 993 en IMAPS (TLS). Le POP3 utilise, lui, le port 110 en clair et 995 en chiffré (POP3S) — une distinction fréquemment testée."},
+{comp:"C3", q:"La commande `usermod -aG groupe utilisateur` sous Linux permet de :", opts:["Ajouter l'utilisateur au groupe indiqué sans le retirer de ses groupes secondaires existants", "Créer un nouveau groupe portant le nom indiqué", "Supprimer l'utilisateur de tous ses groupes secondaires", "Changer le groupe primaire de l'utilisateur en écrasant les autres appartenances"], correct:0, exp:"L'option -a (append) est essentielle : sans elle, `usermod -G` remplacerait la liste complète des groupes secondaires de l'utilisateur au lieu d'y ajouter le nouveau groupe — une erreur classique en administration Linux."},
+{comp:"C3", q:"Quelle différence essentielle distingue RAID 1 et RAID 5 en administration système ?", opts:["RAID 1 duplique intégralement les données sur plusieurs disques (miroir), tandis que RAID 5 répartit données et parité sur plusieurs disques pour tolérer la panne d'un disque avec moins d'espace perdu", "RAID 1 nécessite au minimum 5 disques, RAID 5 seulement 2", "RAID 5 ne tolère aucune panne de disque, contrairement à RAID 1", "RAID 1 et RAID 5 offrent exactement la même capacité utile pour un même nombre de disques"], correct:0, exp:"RAID 1 (miroir) duplique l'intégralité des données sur au moins 2 disques (capacité utile = 1 disque). RAID 5 utilise la parité répartie sur au moins 3 disques, tolère la panne d'un disque avec un meilleur rendement de capacité que le miroir."},
+{comp:"C3", q:"Une politique de mots de passe Windows Server impose 12 caractères minimum, un historique de 24 mots de passe et une validité de 90 jours. Quel est l'intérêt de l'historique de 24 ?", opts:["Empêcher un utilisateur de réutiliser l'un de ses 24 derniers mots de passe lors d'un changement", "Conserver 24 sauvegardes du contrôleur de domaine", "Autoriser 24 tentatives de connexion avant blocage du compte", "Limiter à 24 le nombre de comptes administrateurs"], correct:0, exp:"L'historique des mots de passe empêche la réutilisation immédiate d'anciens mots de passe compromis ou faibles, renforçant l'efficacité de la politique de renouvellement périodique (ici tous les 90 jours)."},
+{comp:"C3", q:"Sur quel port TCP/UDP le protocole d'authentification Kerberos, utilisé par Active Directory, fonctionne-t-il par défaut ?", opts:["88", "389", "3389", "445"], correct:0, exp:"Kerberos utilise le port 88. À titre de comparaison : LDAP utilise le port 389, RDP le port 3389, et SMB le port 445 — des services souvent confondus lors des audits réseau d'un domaine AD."},
+
+{comp:"C4", q:"Quelle est la principale différence entre un hyperviseur de type 1 (bare-metal) et un hyperviseur de type 2 (hosted) ?", opts:["Le type 1 s'exécute directement sur le matériel physique, tandis que le type 2 s'exécute au-dessus d'un système d'exploitation hôte déjà installé", "Le type 1 ne peut virtualiser qu'un seul système d'exploitation à la fois, contrairement au type 2", "Le type 2 offre systématiquement de meilleures performances que le type 1", "Seul le type 2 permet de créer des snapshots de machines virtuelles"], correct:0, exp:"Type 1 (ex. VMware ESXi, Microsoft Hyper-V, KVM sur Linux) s'installe directement sur le matériel pour un accès quasi natif aux ressources ; type 2 (ex. VirtualBox, VMware Workstation) tourne comme une application au-dessus d'un OS hôte, avec une couche de virtualisation supplémentaire."},
+{comp:"C4", q:"Dans une plateforme de virtualisation réseau comme EVE-NG s'appuyant sur KVM et QEMU, quel est le rôle respectif de chacun ?", opts:["KVM fournit la virtualisation matérielle assistée par le processeur au niveau du noyau Linux, tandis que QEMU émule les composants matériels (BIOS, cartes réseau, disques) des machines virtuelles", "KVM et QEMU sont deux noms différents pour un seul et même outil, sans distinction fonctionnelle", "QEMU gère uniquement le stockage, KVM uniquement le réseau", "KVM est un outil propriétaire Cisco, QEMU un outil propriétaire de VMware"], correct:0, exp:"KVM est un module du noyau Linux qui exploite les extensions de virtualisation matérielle du processeur (Intel VT-x/AMD-V) ; QEMU s'appuie sur KVM pour l'accélération tout en émulant les périphériques virtuels des machines émulées — c'est exactement l'association utilisée par EVE-NG."},
+{comp:"C4", q:"Dans une installation EVE-NG typique, à quoi correspondent les bridges Linux br0, br1 et br2 ?", opts:["br0 assure généralement l'accès de management à l'hyperviseur, tandis que br1/br2 relient les machines virtuelles du laboratoire entre elles ou vers l'extérieur (LAN/WAN)", "Ce sont trois interfaces physiques obligatoires sur la carte mère du serveur", "br0, br1 et br2 désignent trois versions différentes du logiciel EVE-NG", "Ils correspondent chacun à un VLAN 802.1Q distinct imposé par le logiciel"], correct:0, exp:"Les bridges Linux permettent d'interconnecter les interfaces virtuelles des VM/conteneurs du laboratoire ; typiquement un bridge dédié au management de l'hyperviseur et d'autres dédiés aux réseaux simulés (LAN/WAN) du topology lab."},
+{comp:"C4", q:"Quelle est la différence fondamentale entre un conteneur (ex. Docker) et une machine virtuelle classique ?", opts:["Le conteneur partage le noyau du système d'exploitation hôte, alors que la machine virtuelle embarque son propre système d'exploitation complet au-dessus d'un matériel virtualisé", "Un conteneur ne peut jamais héberger d'application réseau", "Une machine virtuelle démarre systématiquement plus vite qu'un conteneur", "Les conteneurs et les machines virtuelles utilisent tous deux un hyperviseur de type 1"], correct:0, exp:"Les conteneurs virtualisent au niveau du système d'exploitation et partagent le noyau de l'hôte (isolation par espaces de noms et cgroups), ce qui les rend plus légers et plus rapides à démarrer qu'une VM complète, laquelle embarque son propre noyau via un hyperviseur."},
+{comp:"C4", q:"Dans un fichier docker-compose déployant une stack Elasticsearch/Kibana, la variable `xpack.security.enabled=false` a pour conséquence :", opts:["De désactiver l'authentification et le chiffrement TLS natifs d'Elasticsearch, ce qui expose le cluster si aucune autre mesure de sécurité (réseau, reverse proxy) n'est mise en place", "D'activer automatiquement le chiffrement TLS entre tous les composants de la stack", "De supprimer définitivement les données indexées dans Elasticsearch", "De limiter l'accès à Kibana au seul compte administrateur"], correct:0, exp:"Ce paramètre, courant en environnement de laboratoire, désactive l'authentification et le chiffrement X-Pack d'Elasticsearch/Kibana — une configuration à ne jamais reproduire telle quelle en production sans compensation (réseau isolé, reverse proxy authentifié, TLS)."},
+{comp:"C4", q:"Quelle est la différence entre un snapshot et un clone de machine virtuelle ?", opts:["Le snapshot capture l'état d'une VM à un instant T pour pouvoir y revenir, alors que le clone crée une copie indépendante et distincte de la VM", "Le snapshot et le clone désignent exactement la même opération", "Un clone dépend toujours de la VM d'origine pour fonctionner, contrairement au snapshot", "Le snapshot supprime automatiquement les données de la VM source"], correct:0, exp:"Un snapshot est un point de restauration lié à la VM d'origine (utile pour revenir en arrière avant une manipulation risquée), tandis qu'un clone produit une nouvelle VM totalement indépendante à partir d'un état donné."},
+{comp:"C4", q:"Dans le modèle des services cloud, un fournisseur met à disposition uniquement une infrastructure de calcul, de stockage et de réseau virtualisés, à charge pour le client de gérer l'OS et les applications. De quel modèle s'agit-il ?", opts:["IaaS (Infrastructure as a Service)", "SaaS (Software as a Service)", "PaaS (Platform as a Service)", "DaaS (Desktop as a Service) uniquement"], correct:0, exp:"En IaaS, le client gère l'OS, le middleware et les applications sur une infrastructure fournie (ex. VM, réseau virtuel, stockage) ; en PaaS le fournisseur gère aussi le runtime/l'OS ; en SaaS, l'application complète est fournie clé en main."},
+{comp:"C4", q:"Qu'est-ce que le \"sur-engagement\" (overcommitment) de ressources en environnement virtualisé ?", opts:["Allouer aux machines virtuelles davantage de ressources (CPU/RAM) que ce que le serveur physique possède réellement, en pariant qu'elles ne seront pas toutes sollicitées simultanément", "Réserver strictement et exclusivement chaque cœur CPU physique à une seule VM", "Interdire toute virtualisation sur un serveur pour garantir les performances", "Dupliquer chaque VM sur deux hyperviseurs différents"], correct:0, exp:"L'overcommitment permet d'optimiser le taux d'usage du matériel en misant sur le fait que toutes les VM ne consomment pas leur allocation maximale en même temps ; mal dimensionné, il peut cependant provoquer une contention de ressources et dégrader les performances."},
+{comp:"C4", q:"Dans une architecture de supervision de logs où Filebeat est utilisé à la place de Logstash pour transmettre les journaux vers Elasticsearch, quel avantage cela procure-t-il typiquement ?", opts:["Filebeat est un agent plus léger en ressources, adapté à une collecte simple et directe des journaux, contrairement à Logstash qui offre davantage de capacités de transformation mais consomme plus de ressources", "Filebeat remplace intégralement Elasticsearch et Kibana", "Filebeat chiffre nativement toutes les données au repos dans Elasticsearch", "Logstash et Filebeat sont deux noms pour le même composant de la suite Elastic"], correct:0, exp:"Filebeat, agent \"Beat\" léger, se contente de collecter et transmettre les journaux (avec des modules prédéfinis) avec une faible empreinte, alors que Logstash offre un pipeline de transformation plus riche mais plus gourmand en ressources — un choix d'architecture courant sur des laboratoires ou petites infrastructures."},
+{comp:"C4", q:"Quels sont les ports par défaut respectivement utilisés par Elasticsearch (API REST) et par Kibana (interface web) dans une stack ELK standard ?", opts:["9200 pour Elasticsearch et 5601 pour Kibana", "9200 pour Kibana et 5601 pour Elasticsearch", "8080 pour Elasticsearch et 443 pour Kibana", "5044 pour Elasticsearch et 5514 pour Kibana"], correct:0, exp:"Elasticsearch expose son API REST sur le port 9200 par défaut, et Kibana son interface web sur le port 5601. Le port 5044 correspond généralement à l'entrée Beats/Logstash, distincte de ces deux services."},
+{comp:"C4", q:"Pourquoi la migration à chaud (\"live migration\") d'une machine virtuelle d'un hôte physique à un autre nécessite-t-elle généralement un stockage partagé entre les deux hôtes ?", opts:["Pour que le disque virtuel de la VM reste accessible sans interruption pendant et après le transfert, sans avoir à copier physiquement les fichiers de disque d'un hôte à l'autre", "Parce que le stockage partagé accélère uniquement le démarrage initial de la VM", "Parce qu'une VM ne peut exister que sur un stockage local à l'hyperviseur", "Pour dupliquer automatiquement la VM sur les deux hôtes en permanence"], correct:0, exp:"Avec un stockage partagé (SAN/NAS), seuls l'état mémoire et le contexte d'exécution de la VM doivent être transférés entre hôtes ; le disque virtuel reste accessible en continu depuis les deux hôtes, ce qui permet une bascule quasi transparente sans interruption de service."},
+{comp:"C4", q:"Pourquoi un snapshot de machine virtuelle ne constitue-t-il pas, à lui seul, une véritable stratégie de sauvegarde ?", opts:["Parce qu'il reste généralement stocké sur le même hyperviseur/support que la VM d'origine et n'offre donc aucune protection en cas de panne ou de sinistre touchant cet hôte", "Parce qu'un snapshot supprime automatiquement les données de la VM au bout de 24 heures", "Parce qu'un snapshot ne peut être créé que lorsque la VM est éteinte", "Parce qu'un snapshot chiffre systématiquement les données, les rendant inutilisables en restauration"], correct:0, exp:"Un snapshot local ne protège pas contre la perte de l'hyperviseur ou du support de stockage sous-jacent : une vraie stratégie de sauvegarde nécessite une copie externalisée, régulière et testée (cf. la règle 3-2-1-1-0), indépendante de l'infrastructure de production."}
+];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let locked = false;
+
+const screenIntro = document.getElementById("screenIntro");
+const screenQuiz = document.getElementById("screenQuiz");
+const screenResults = document.getElementById("screenResults");
+const topbar = document.getElementById("topbar");
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  screenIntro.classList.add("hidden");
+  screenQuiz.classList.remove("hidden");
+  topbar.classList.remove("hidden");
+  renderQuestion();
+});
+
+function renderQuestion() {
+  locked = false;
+  const item = QUESTIONS[current];
+  document.getElementById("compChip").textContent = item.comp;
+  document.getElementById("qNumLabel").textContent = "Q" + (current + 1) + "/" + QUESTIONS.length;
+  document.getElementById("qText").textContent = item.q;
+  document.getElementById("progressFill").style.width = ((current) / QUESTIONS.length * 100) + "%";
+  document.getElementById("progressText").textContent = "Question " + (current + 1) + "/" + QUESTIONS.length;
+  const scoreSoFar = answers.filter((a,i) => a !== null && a === QUESTIONS[i].correct).length;
+  document.getElementById("scoreLiveText").textContent = "Score provisoire : " + scoreSoFar;
+
+  const explainBox = document.getElementById("explainBox");
+  explainBox.classList.remove("show");
+  explainBox.innerHTML = "";
+
+  const wrap = document.getElementById("optsWrap");
+  wrap.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  item.opts.forEach((optText, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.innerHTML = '<span class="letter">' + letters[idx] + '</span><span>' + optText + '</span>';
+    btn.addEventListener("click", () => selectAnswer(idx));
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById("nextBtn").disabled = true;
+  document.getElementById("nextBtn").textContent = (current === QUESTIONS.length - 1) ? "Voir mon bilan →" : "Question suivante →";
+}
+
+function selectAnswer(idx) {
+  if (locked) return;
+  locked = true;
+  answers[current] = idx;
+  const item = QUESTIONS[current];
+  const opts = document.querySelectorAll("#optsWrap .opt");
+  opts.forEach((el, i) => {
+    el.classList.add("disabled");
+    if (i === item.correct) el.classList.add("correct");
+    if (i === idx && idx !== item.correct) el.classList.add("incorrect");
+    if (i === idx) el.classList.add("selected");
+  });
+  const explainBox = document.getElementById("explainBox");
+  explainBox.innerHTML = (idx === item.correct ? "<b>✓ Bonne réponse.</b> " : "<b>✗ Réponse incorrecte.</b> ") + item.exp;
+  explainBox.classList.add("show");
+  document.getElementById("nextBtn").disabled = false;
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+});
+
+function showResults() {
+  screenQuiz.classList.add("hidden");
+  topbar.classList.add("hidden");
+  screenResults.classList.remove("hidden");
+
+  const total = QUESTIONS.length;
+  const score = answers.filter((a,i) => a === QUESTIONS[i].correct).length;
+  const pct = Math.round(score / total * 100);
+
+  document.getElementById("scoreVal").textContent = score;
+  const circumference = 339;
+  const offset = circumference - (pct/100)*circumference;
+  document.getElementById("gaugeCircle").style.strokeDashoffset = offset;
+
+  let levelLabel, levelDesc, levelColorVar;
+  if (pct >= 90) { levelLabel = "Expert — prêt pour la certification"; levelDesc = "Votre maîtrise du référentiel du Bloc 1 est solide sur les quatre compétences. Concentrez votre dernière relecture sur les quelques erreurs ci-dessous plutôt que sur une révision complète."; levelColorVar = "success"; }
+  else if (pct >= 75) { levelLabel = "Confirmé — bon niveau"; levelDesc = "Le socle est acquis. Ciblez vos révisions sur la ou les compétences les moins bien notées avant l'épreuve."; levelColorVar = "success"; }
+  else if (pct >= 60) { levelLabel = "Opérationnel — bases correctes"; levelDesc = "Les fondamentaux sont là mais plusieurs lacunes subsistent. Une révision ciblée sur les compétences faibles est nécessaire avant le passage."; levelColorVar = "warning"; }
+  else if (pct >= 40) { levelLabel = "Fragile — révision nécessaire"; levelDesc = "Trop d'écarts pour se présenter sereinement. Reprenez méthodiquement chaque compétence en dessous de 60% ci-dessous."; levelColorVar = "danger"; }
+  else { levelLabel = "À reprendre — fondamentaux à revoir"; levelDesc = "Le score indique un travail de fond à mener sur l'ensemble du référentiel du Bloc 1 avant de viser l'évaluation."; levelColorVar = "danger"; }
+
+  const badge = document.getElementById("levelBadge");
+  badge.textContent = levelLabel;
+  badge.style.background = "var(--" + levelColorVar + "-dim, var(--surface-2))";
+  badge.style.color = "var(--" + levelColorVar + ")";
+  badge.style.border = "1px solid var(--" + levelColorVar + ")";
+  document.getElementById("levelDesc").textContent = levelDesc;
+
+  const comps = ["C1","C2","C3","C4"];
+  const compStats = {};
+  comps.forEach(c => {
+    const idxs = QUESTIONS.map((q,i) => q.comp === c ? i : -1).filter(i => i >= 0);
+    const correctCount = idxs.filter(i => answers[i] === QUESTIONS[i].correct).length;
+    compStats[c] = { correct: correctCount, total: idxs.length, pct: Math.round(correctCount / idxs.length * 100) };
+  });
+
+  const barsWrap = document.getElementById("compBars");
+  barsWrap.innerHTML = "";
+  comps.forEach(c => {
+    const s = compStats[c];
+    const color = s.pct >= 75 ? "var(--success)" : s.pct >= 50 ? "var(--warning)" : "var(--danger)";
+    const row = document.createElement("div");
+    row.className = "barrow";
+    row.innerHTML = '<span class="lbl">' + c + " — " + COMP_NAMES[c] + '</span>' +
+      '<span class="track"><span class="fill" style="width:' + s.pct + '%; background:' + color + ';"></span></span>' +
+      '<span class="pct">' + s.correct + "/" + s.total + '</span>';
+    barsWrap.appendChild(row);
+  });
+
+  const sorted = comps.slice().sort((a,b) => compStats[b].pct - compStats[a].pct);
+  const strengths = sorted.filter(c => compStats[c].pct >= 65).slice(0,2);
+  const weaknesses = sorted.filter(c => compStats[c].pct < 65);
+  const strengthsList = document.getElementById("strengthsList");
+  const weaknessesList = document.getElementById("weaknessesList");
+  strengthsList.innerHTML = "";
+  weaknessesList.innerHTML = "";
+  if (strengths.length === 0) {
+    strengthsList.innerHTML = "<li>Aucune compétence au-dessus de 65% pour l'instant — voir le plan de révision à droite.</li>";
+  } else {
+    strengths.forEach(c => { const li = document.createElement("li"); li.textContent = c + " — " + COMP_NAMES[c] + " (" + compStats[c].pct + "%)"; strengthsList.appendChild(li); });
+  }
+  if (weaknesses.length === 0) {
+    weaknessesList.innerHTML = "<li>Aucune faiblesse marquée — toutes les compétences sont à 65% ou plus.</li>";
+  } else {
+    weaknesses.forEach(c => { const li = document.createElement("li"); li.textContent = c + " — " + COMP_NAMES[c] + " (" + compStats[c].pct + "%)"; weaknessesList.appendChild(li); });
+  }
+
+  renderReview("all");
+  document.querySelectorAll(".filterbtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filterbtn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderReview(btn.dataset.f);
+    });
+  });
+}
+
+function renderReview(filter) {
+  const list = document.getElementById("reviewList");
+  list.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  QUESTIONS.forEach((item, i) => {
+    const isCorrect = answers[i] === item.correct;
+    if (filter === "wrong" && isCorrect) return;
+    if (["C1","C2","C3","C4"].includes(filter) && item.comp !== filter) return;
+    const div = document.createElement("div");
+    div.className = "reviewitem " + (isCorrect ? "right" : "wrong");
+    const yourAnswerText = answers[i] === null ? "(sans réponse)" : letters[answers[i]] + ". " + item.opts[answers[i]];
+    div.innerHTML =
+      '<div class="rtop"><span class="chip">' + item.comp + '</span><span class="chip">' + (isCorrect ? "Correct" : "Erreur") + '</span></div>' +
+      '<div class="rq">' + (i+1) + ". " + item.q + '</div>' +
+      '<div class="ryour" style="color:' + (isCorrect ? "var(--success)" : "var(--danger)") + '">Votre réponse : ' + yourAnswerText + '</div>' +
+      (isCorrect ? "" : '<div class="rcorrect">Bonne réponse : ' + letters[item.correct] + ". " + item.opts[item.correct] + '</div>') +
+      '<div class="rexp">' + item.exp + '</div>';
+    list.appendChild(div);
+  });
+}
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  current = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  screenResults.classList.add("hidden");
+  screenIntro.classList.remove("hidden");
+});
+</script>

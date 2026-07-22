@@ -1,0 +1,489 @@
+<title>QCM Bloc 1 — Niveau Approfondi (Guide Formateur)</title>
+<style>
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1413; --surface: #101c1b; --surface-2: #16211f;
+      --ink: #e7eeec; --ink-soft: #9fb0ac; --line: #24332f;
+      --accent: #3fc2b9; --accent-ink: #bff3ee; --accent-dim: #1c3a38;
+      --success: #4fbe7b; --success-dim: #16302170;
+      --danger: #e2685d; --danger-dim: #3a1c1970;
+      --warning: #e0ac55; --shadow: 0 12px 32px -16px rgba(0,0,0,.55);
+    }
+  }
+  :root {
+    --bg: #f3f6f4; --surface: #ffffff; --surface-2: #e9edeb;
+    --ink: #142221; --ink-soft: #526460; --line: #d9e1de;
+    --accent: #0e7c86; --accent-ink: #063c42; --accent-dim: #dcefee;
+    --success: #2e8b57; --success-dim: #e3f3e8;
+    --danger: #c1443b; --danger-dim: #fbe7e5;
+    --warning: #a3701f; --shadow: 0 12px 32px -18px rgba(20,40,38,.28);
+    --font-mono: ui-monospace, "Cascadia Code", "Cascadia Mono", Consolas, "SF Mono", Menlo, monospace;
+    --font-sans: "Segoe UI", "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1413; --surface: #101c1b; --surface-2: #16211f;
+    --ink: #e7eeec; --ink-soft: #9fb0ac; --line: #24332f;
+    --accent: #3fc2b9; --accent-ink: #bff3ee; --accent-dim: #1c3a38;
+    --success: #4fbe7b; --success-dim: #16302170;
+    --danger: #e2685d; --danger-dim: #3a1c1970;
+    --warning: #e0ac55; --shadow: 0 12px 32px -16px rgba(0,0,0,.55);
+  }
+  :root[data-theme="light"] {
+    --bg: #f3f6f4; --surface: #ffffff; --surface-2: #e9edeb;
+    --ink: #142221; --ink-soft: #526460; --line: #d9e1de;
+    --accent: #0e7c86; --accent-ink: #063c42; --accent-dim: #dcefee;
+    --success: #2e8b57; --success-dim: #e3f3e8;
+    --danger: #c1443b; --danger-dim: #fbe7e5;
+    --warning: #a3701f; --shadow: 0 12px 32px -18px rgba(20,40,38,.28);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--ink); font-family: var(--font-sans);
+    line-height: 1.55; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  .topbar { position: sticky; top: 0; z-index: 5; background: var(--bg); padding-top: 6px; padding-bottom: 10px; }
+  .linkbar { height: 6px; border-radius: 4px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--line); }
+  .linkbar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-ink)); transition: width .35s ease; }
+  .topmeta { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); letter-spacing: .02em; }
+
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+  h1 { font-size: clamp(24px, 4vw, 32px); line-height: 1.15; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  h2 { font-size: 19px; margin: 0 0 10px; text-wrap: balance; }
+  p { color: var(--ink-soft); margin: 0 0 14px; }
+  strong { color: var(--ink); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); }
+  .grid4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 18px 0 22px; }
+  @media (max-width: 520px) { .grid4 { grid-template-columns: 1fr; } }
+  .comp-tile { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: var(--surface-2); }
+  .comp-tile .tag { font-family: var(--font-mono); font-size: 11px; color: var(--accent); letter-spacing: .05em; }
+  .comp-tile .name { font-size: 13.5px; margin-top: 3px; color: var(--ink); }
+
+  button.primary {
+    font-family: var(--font-mono); font-size: 14px; letter-spacing: .02em; cursor: pointer;
+    background: var(--accent); color: var(--surface); border: none; border-radius: 9px;
+    padding: 13px 22px; box-shadow: var(--shadow);
+  }
+  button.primary:hover { filter: brightness(1.06); }
+  button.primary:focus-visible, button.ghost:focus-visible, .opt:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.ghost {
+    font-family: var(--font-mono); font-size: 13px; cursor: pointer; background: transparent;
+    color: var(--ink-soft); border: 1px solid var(--line); border-radius: 9px; padding: 11px 18px;
+  }
+  button.ghost:hover { color: var(--ink); border-color: var(--ink-soft); }
+  button:disabled { opacity: .4; cursor: not-allowed; }
+  .btnrow { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .04em; padding: 4px 9px; border-radius: 100px; border: 1px solid var(--line); color: var(--ink-soft); background: var(--surface-2); text-transform: uppercase; }
+
+  .qhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .qnum { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .qtext { font-size: 17px; color: var(--ink); margin: 0 0 18px; text-wrap: balance; }
+  .qref { font-family: var(--font-mono); font-size: 11px; color: var(--ink-soft); margin: -12px 0 16px; }
+
+  .opt { display: flex; gap: 12px; align-items: flex-start; text-align: left; width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 13px 14px; margin-bottom: 9px; cursor: pointer; font-family: var(--font-sans); font-size: 14.5px; color: var(--ink); transition: border-color .15s, background .15s; }
+  .opt:hover { border-color: var(--accent); }
+  .opt .letter { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); border: 1px solid var(--line); border-radius: 5px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; flex: none; margin-top: 1px; }
+  .opt.selected { border-color: var(--accent); background: var(--accent-dim); }
+  .opt.correct { border-color: var(--success); background: var(--success-dim); }
+  .opt.incorrect { border-color: var(--danger); background: var(--danger-dim); }
+  .opt.correct .letter { border-color: var(--success); color: var(--success); }
+  .opt.incorrect .letter { border-color: var(--danger); color: var(--danger); }
+  .opt.disabled { cursor: default; }
+
+  .explain { display: none; margin-top: 4px; padding: 13px 14px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); font-size: 13.5px; color: var(--ink-soft); }
+  .explain.show { display: block; }
+  .explain b { color: var(--ink); }
+  .explain .src { display: block; margin-top: 8px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
+
+  .scorewrap { display: flex; align-items: center; gap: 22px; margin-bottom: 20px; flex-wrap: wrap; }
+  .scoregauge { position: relative; width: 128px; height: 128px; flex: none; }
+  .scoregauge svg { transform: rotate(-90deg); }
+  .scoregauge .num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: var(--font-mono); }
+  .scoregauge .num .val { font-size: 26px; font-variant-numeric: tabular-nums; }
+  .scoregauge .num .max { font-size: 11px; color: var(--ink-soft); }
+  .level-badge { font-family: var(--font-mono); font-size: 13px; letter-spacing: .02em; padding: 5px 11px; border-radius: 100px; display: inline-block; margin-bottom: 6px; }
+
+  .barrow { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .barrow .lbl { font-size: 13px; color: var(--ink); }
+  .barrow .track { height: 9px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+  .barrow .fill { height: 100%; border-radius: 6px; }
+  .barrow .pct { font-family: var(--font-mono); font-size: 12px; text-align: right; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+
+  .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+  @media (max-width: 560px) { .col2 { grid-template-columns: 1fr; } }
+  .verdict-box { border-radius: 12px; padding: 16px 17px; border: 1px solid var(--line); }
+  .verdict-box.good { background: var(--success-dim); border-color: var(--success); }
+  .verdict-box.bad { background: var(--danger-dim); border-color: var(--danger); }
+  .verdict-box .vt { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .verdict-box.good .vt { color: var(--success); }
+  .verdict-box.bad .vt { color: var(--danger); }
+  .verdict-box ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink); }
+  .verdict-box li { margin-bottom: 4px; }
+
+  .reviewfilters { display: flex; gap: 8px; flex-wrap: wrap; margin: 22px 0 16px; }
+  .filterbtn { font-family: var(--font-mono); font-size: 12px; padding: 7px 12px; border-radius: 100px; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-soft); cursor: pointer; }
+  .filterbtn.active { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+
+  .reviewitem { border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; background: var(--surface-2); }
+  .reviewitem.wrong { border-left: 3px solid var(--danger); }
+  .reviewitem.right { border-left: 3px solid var(--success); }
+  .reviewitem .rtop { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .reviewitem .rq { font-size: 14px; color: var(--ink); margin-bottom: 6px; }
+  .reviewitem .ryour { font-size: 13px; margin-bottom: 3px; }
+  .reviewitem .rcorrect { font-size: 13px; color: var(--success); margin-bottom: 6px; }
+  .reviewitem .rexp { font-size: 13px; color: var(--ink-soft); }
+  .reviewitem .rsrc { font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 4px; }
+
+  footer.note { margin-top: 26px; font-size: 12px; color: var(--ink-soft); font-family: var(--font-mono); }
+  .hidden { display: none !important; }
+</style>
+
+<div class="wrap">
+  <div class="topbar hidden" id="topbar">
+    <div class="linkbar"><span id="progressFill" style="width:0%"></span></div>
+    <div class="topmeta">
+      <span id="progressText">Question 0/50</span>
+      <span id="scoreLiveText">Score provisoire : 0</span>
+    </div>
+  </div>
+
+  <!-- SCREEN 1 : BRIEFING -->
+  <section id="screenIntro">
+    <p class="eyebrow">TP-01352 · Millésime 02 · Guide formateur REAC/RE</p>
+    <h1>QCM Bloc 1 — Niveau Approfondi<br>d'après le Guide de révision du formateur</h1>
+    <p>Ce deuxième QCM est construit exclusivement à partir du <strong>Guide de révision stagiaire</strong> que votre formateur vous a remis (structuré CP1 à CP4, mémos transversaux, glossaire). Le guide le dit lui-même : <em>« la simple définition d'une technologie ne démontre pas la maîtrise professionnelle »</em>. Les questions ci-dessous vont donc au-delà du vocabulaire — elles testent les distinctions fines que le jury pose réellement à l'oral : MCO vs MCS, HA vs sauvegarde, RTO vs RPO, ACL vs pare-feu stateful, IDS vs IPS, snapshot vs sauvegarde, IaaS/PaaS/SaaS…</p>
+
+    <div class="card">
+      <h2>Répartition par compétence</h2>
+      <div class="grid4">
+        <div class="comp-tile"><div class="tag">CP1 · 13 questions</div><div class="name">Bonnes pratiques, ITSM, MCO/MCS, continuité</div></div>
+        <div class="comp-tile"><div class="tag">CP2 · 13 questions</div><div class="name">Réseaux, sécurité, VPN, diagnostic</div></div>
+        <div class="comp-tile"><div class="tag">CP3 · 13 questions</div><div class="name">Systèmes, AD, Linux, PKI, MFA</div></div>
+        <div class="comp-tile"><div class="tag">CP4 · 11 questions</div><div class="name">Virtualisation, stockage, cloud, conteneurs</div></div>
+      </div>
+      <p>Chaque explication renvoie à la section exacte du guide (ex. <em>cf. 1.5</em>) pour que vous puissiez rouvrir le document et approfondir immédiatement le point manqué.</p>
+      <p style="margin-bottom:0">Une seule bonne réponse par question, pas de retour en arrière — comme à l'oral. Comptez environ 25 à 30 minutes.</p>
+      <div class="btnrow">
+        <button class="primary" id="startBtn">Commencer le QCM →</button>
+      </div>
+    </div>
+    <footer class="note">Source unique : AIS_Bloc1_Guide_revision_stagiaire.docx, lui-même adossé au REAC/RE du TP-01352 (millésime 2023).</footer>
+  </section>
+
+  <!-- SCREEN 2 : QUIZ -->
+  <section id="screenQuiz" class="hidden">
+    <div class="card">
+      <div class="qhead">
+        <span class="chip" id="compChip">CP1</span>
+        <span class="qnum" id="qNumLabel">Q1/50</span>
+      </div>
+      <p class="qtext" id="qText"></p>
+      <div id="optsWrap"></div>
+      <div class="explain" id="explainBox"></div>
+      <div class="btnrow">
+        <button class="primary" id="nextBtn" disabled>Question suivante →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3 : RESULTS -->
+  <section id="screenResults" class="hidden">
+    <p class="eyebrow">Résultat</p>
+    <h1 id="resultsTitle">Bilan de votre passage blanc</h1>
+
+    <div class="card">
+      <div class="scorewrap">
+        <div class="scoregauge">
+          <svg width="128" height="128" viewBox="0 0 128 128">
+            <circle cx="64" cy="64" r="54" fill="none" stroke="var(--surface-2)" stroke-width="12"/>
+            <circle id="gaugeCircle" cx="64" cy="64" r="54" fill="none" stroke="var(--accent)" stroke-width="12" stroke-linecap="round" stroke-dasharray="339" stroke-dashoffset="339"/>
+          </svg>
+          <div class="num"><span class="val" id="scoreVal">0</span><span class="max">/ 50</span></div>
+        </div>
+        <div>
+          <span class="level-badge" id="levelBadge">—</span>
+          <p id="levelDesc" style="margin:0; max-width:420px;"></p>
+        </div>
+      </div>
+
+      <h2>Score par compétence</h2>
+      <div id="compBars"></div>
+
+      <div class="col2">
+        <div class="verdict-box good">
+          <div class="vt">Points forts</div>
+          <ul id="strengthsList"></ul>
+        </div>
+        <div class="verdict-box bad">
+          <div class="vt">Points à consolider</div>
+          <ul id="weaknessesList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <h2 style="margin-top:30px;">Corrigé détaillé</h2>
+    <div class="reviewfilters" id="reviewFilters">
+      <button class="filterbtn active" data-f="all">Toutes (50)</button>
+      <button class="filterbtn" data-f="wrong">Erreurs</button>
+      <button class="filterbtn" data-f="CP1">CP1</button>
+      <button class="filterbtn" data-f="CP2">CP2</button>
+      <button class="filterbtn" data-f="CP3">CP3</button>
+      <button class="filterbtn" data-f="CP4">CP4</button>
+    </div>
+    <div id="reviewList"></div>
+
+    <div class="btnrow">
+      <button class="ghost" id="restartBtn">Recommencer un passage</button>
+    </div>
+    <footer class="note">Auto-évaluation générée localement dans votre navigateur — aucune donnée n'est envoyée.</footer>
+  </section>
+</div>
+
+<script>
+const COMP_NAMES = {
+  CP1: "Bonnes pratiques d'administration",
+  CP2: "Infrastructures réseaux",
+  CP3: "Infrastructures systèmes",
+  CP4: "Infrastructures virtualisées"
+};
+
+const QUESTIONS = [
+{comp:"CP1", src:"1.1 / MÉMO", q:"Un site distant signale que le service DNS ne répond plus. L'investigation révèle qu'une tâche planifiée mal configurée sature régulièrement ce serveur depuis plusieurs semaines, provoquant cette panne de façon récurrente. Comment qualifier correctement ces deux éléments selon le vocabulaire ITSM ?", opts:["L'indisponibilité du DNS est l'incident ; la tâche planifiée mal configurée est le problème, cause racine de récidive", "Les deux éléments constituent deux incidents distincts et indépendants", "Il s'agit d'un seul et même incident, le mot « problème » n'a pas de sens ici", "La tâche planifiée mal configurée doit être qualifiée de changement, pas de problème"], correct:0, exp:"L'incident est l'interruption constatée du service (guide 1.1). Le problème est la cause réelle identifiée, ici récurrente : traiter uniquement l'incident rétablit le service mais ne résout pas la récidive tant que le problème n'est pas corrigé.", srcLabel:"cf. 1.1 — Vocabulaire ITSM"},
+{comp:"CP1", src:"1.2", q:"Deux incidents surviennent le même jour : le premier bloque l'impression pour un seul utilisateur, le second rend Active Directory indisponible pour l'ensemble de l'entreprise. Ces deux symptômes semblent techniquement proches (« le service ne répond plus »). Qu'est-ce qui doit réellement déterminer leur priorité de traitement respective ?", opts:["Le croisement de l'impact (nombre d'utilisateurs/services affectés) et de l'urgence (délai de tolérance de l'organisation)", "L'ordre chronologique d'arrivée des tickets, le premier signalé étant toujours traité en premier", "La complexité technique perçue de la résolution, la plus complexe étant toujours prioritaire", "Le nom du service technique affecté, indépendamment de son usage réel"], correct:0, exp:"Le guide précise que la priorité résulte du croisement impact × urgence, et non du seul symptôme technique : une panne AD à fort impact et forte urgence prime largement sur une panne d'impression individuelle.", srcLabel:"cf. 1.2 — Impact, urgence, priorité"},
+{comp:"CP1", src:"1.3 / ATTENTION", q:"Un service vient de tomber. Avant même de collecter les journaux et les métriques, un technicien redémarre immédiatement le serveur concerné, ce qui rétablit le service. Pourquoi cette action, bien qu'efficace à court terme, est-elle déconseillée en tout début de diagnostic ?", opts:["Parce qu'un redémarrage peut rétablir temporairement le service tout en supprimant des traces utiles à l'analyse de la cause", "Parce qu'un redémarrage est techniquement impossible sans arrêter tous les autres services du datacenter", "Parce que cela constitue automatiquement un changement non autorisé nécessitant une validation préalable", "Parce que cela empêche définitivement toute nouvelle panne du même type"], correct:0, exp:"Le point ATTENTION du guide est explicite : éviter les actions irréversibles ou destructrices en début de diagnostic, car elles peuvent effacer les preuves (journaux, état mémoire, connexions en cours) nécessaires pour identifier la cause racine.", srcLabel:"cf. 1.3 — ATTENTION"},
+{comp:"CP1", src:"1.4", q:"Un contrat de service fixe un objectif de MTTR de 4 heures pour les incidents critiques. Que mesure précisément le MTTR ?", opts:["Le temps moyen nécessaire pour rétablir ou réparer un service après une panne", "Le temps moyen de fonctionnement ininterrompu entre deux pannes successives", "Le pourcentage de temps pendant lequel le service est utilisable sur une période donnée", "Le délai contractuel maximal de réponse initiale du support"], correct:0, exp:"Le MTTR (temps moyen de rétablissement) mesure la durée de résolution d'une panne, à ne pas confondre avec le MTBF (temps moyen entre deux pannes) ni avec la disponibilité (pourcentage de temps utilisable).", srcLabel:"cf. 1.4 — SLA et qualité de service"},
+{comp:"CP1", src:"1.4", q:"Toujours dans le cadre du suivi de la qualité de service, à quoi correspond le MTBF ?", opts:["Le temps moyen de fonctionnement entre deux pannes successives d'un même équipement ou service", "Le temps moyen nécessaire pour rétablir un service après une interruption", "La durée maximale acceptée pour la perte de données en cas de sinistre", "L'objectif interne fixé par l'équipe technique pour respecter le SLA contractuel"], correct:0, exp:"MTBF = temps moyen entre pannes (fiabilité dans la durée), à distinguer du MTTR (vitesse de rétablissement), du RPO (perte de données tolérée) et du SLO (objectif interne de service).", srcLabel:"cf. 1.4 — SLA et qualité de service"},
+{comp:"CP1", src:"1.5 / MÉMO", q:"Un serveur applique scrupuleusement toutes les mises à jour de sécurité disponibles et respecte un durcissement strict, mais ses capacités de traitement sont insuffisantes et il tombe régulièrement en panne faute de maintenance préventive. Quel constat le guide permet-il de formuler ?", opts:["Le MCS (sécurité) est correctement assuré, mais le MCO (disponibilité, capacité, maintenance) fait défaut : les deux sont complémentaires et indissociables", "Puisque la sécurité est assurée, la disponibilité du service n'a plus d'importance", "Le MCO et le MCS désignent la même démarche, il n'y a donc pas de distinction à faire", "Un serveur durci ne peut techniquement jamais tomber en panne"], correct:0, exp:"Le guide insiste : « un système très sécurisé mais inutilisable ne répond pas au besoin métier ». MCO (disponibilité, capacité, maintenance préventive) et MCS (vulnérabilités, durcissement, contrôle des accès) doivent être menés de front.", srcLabel:"cf. 1.5 — MCO et MCS"},
+{comp:"CP1", src:"1.6 / POINT DE VIGILANCE", q:"Un job de sauvegarde nocturne affiche le statut « réussi » chaque jour depuis six mois. Que peut-on en conclure, selon le guide, sur la capacité réelle à restaurer les données en cas de besoin ?", opts:["Rien de certain : seule une restauration réellement testée, contrôlée et documentée prouve que la sauvegarde est exploitable", "Que la sauvegarde est nécessairement exploitable, un statut « réussi » constituant une preuve suffisante", "Que la fréquence de sauvegarde peut désormais être réduite sans risque", "Que le chiffrement des données sauvegardées est automatiquement garanti"], correct:0, exp:"Le guide est catégorique : « le statut réussi d'un job ne prouve pas que les données peuvent être restaurées dans le délai attendu ». Seul un test de restauration documenté, avec temps mesuré et critères de succès, constitue une preuve.", srcLabel:"cf. 1.6 — Sauvegarde, restauration et continuité"},
+{comp:"CP1", src:"1.6 / POINT DE VIGILANCE", q:"Pourquoi un snapshot de machine virtuelle ne peut-il pas, selon le guide, être considéré comme une sauvegarde indépendante ?", opts:["Parce qu'il dépend de l'infrastructure sur laquelle il est créé et doit rester temporaire", "Parce qu'un snapshot supprime automatiquement les données originales de la VM", "Parce qu'un snapshot ne peut techniquement être pris que lorsque la VM est éteinte", "Parce qu'un snapshot chiffre systématiquement les données, les rendant inexploitables"], correct:0, exp:"« Un snapshot de machine virtuelle n'est pas une sauvegarde indépendante. Il dépend de l'infrastructure et doit rester temporaire » — une panne touchant l'hyperviseur ou le stockage source emporte alors aussi le snapshot.", srcLabel:"cf. 1.6 — POINT DE VIGILANCE"},
+{comp:"CP1", src:"1.7", q:"Un changement significatif (mise à jour d'un hyperviseur en production) est autorisé, planifié et communiqué. Que manque-t-il pour respecter intégralement la démarche de gestion des changements décrite dans le guide ?", opts:["Un plan de retour arrière définissant les conditions de déclenchement, la procédure et la durée en cas d'échec", "Une nouvelle autorisation hiérarchique supplémentaire, redondante avec la première", "La suppression de la fenêtre de maintenance déjà planifiée", "Le remplacement du changement par une simple demande de service"], correct:0, exp:"Le guide liste explicitement le retour arrière comme une étape à part entière de la gestion du changement, au même titre que la préparation, la validation, la planification, la mise en œuvre et le contrôle.", srcLabel:"cf. 1.7 — Gestion des changements"},
+{comp:"CP1", src:"5.2 / MÉMO", q:"La direction d'une entreprise déclare accepter de perdre au maximum 4 heures de données en cas de sinistre majeur, tout en exigeant que le service soit rétabli en moins de 30 minutes. À quels indicateurs correspondent respectivement ces deux exigences ?", opts:["4 heures = RPO (perte de données maximale acceptable) ; 30 minutes = RTO (durée maximale cible de rétablissement)", "4 heures = RTO ; 30 minutes = RPO", "Les deux valeurs correspondent au même indicateur, le MTTR", "4 heures = PCA ; 30 minutes = PRA, ce sont des durées et non des indicateurs de continuité"], correct:0, exp:"RPO répond à « jusqu'à quel point dans le passé peut-on perdre des données ? » (ici 4h) ; RTO répond à « en combien de temps faut-il reprendre le service ? » (ici 30 min). Une confusion fréquente et lourde de conséquences en entretien technique.", srcLabel:"cf. 5.2 — PCA, PRA, RTO, RPO"},
+{comp:"CP1", src:"5.2", q:"Quelle différence distingue le PCA (Plan de Continuité d'Activité) du PRA (Plan de Reprise d'Activité) ?", opts:["Le PCA vise à maintenir les activités essentielles PENDANT une perturbation, tandis que le PRA vise à reprendre l'activité APRÈS une interruption importante", "Le PCA et le PRA désignent exactement la même démarche, appliquée à des échelles différentes de l'entreprise", "Le PRA précède toujours le PCA dans la chronologie d'un sinistre", "Le PCA ne concerne que les infrastructures cloud, le PRA uniquement les infrastructures sur site"], correct:0, exp:"PCA = maintien des activités essentielles en cours de perturbation (mode dégradé) ; PRA = reprise de l'activité après une interruption significative, une fois le sinistre passé.", srcLabel:"cf. 5.2 — PCA, PRA, RTO, RPO"},
+{comp:"CP1", src:"1.2", q:"Un incident dépasse les compétences disponibles au sein de l'équipe de premier niveau, qui doit mobiliser un expert plus spécialisé sans pour autant informer la direction. De quel mécanisme s'agit-il ?", opts:["Une escalade fonctionnelle, qui mobilise une compétence ou un support plus spécialisé", "Une escalade hiérarchique, qui informe ou mobilise un niveau de décision supérieur", "Un changement, car toute mobilisation d'une équipe supplémentaire modifie un service", "Une demande de service, car aucune panne n'est directement constatée par l'équipe spécialisée"], correct:0, exp:"L'escalade fonctionnelle mobilise une expertise technique plus pointue sans changer le niveau de décision impliqué ; l'escalade hiérarchique, elle, informe ou implique un niveau de management supérieur, typiquement pour un incident majeur.", srcLabel:"cf. 1.2 — Impact, urgence, priorité et escalade"},
+{comp:"CP1", src:"1.8 / POINT JURY", q:"Un administrateur résout un incident critique avec succès mais ne rédige aucun ticket, aucune procédure, aucun compte rendu. Pourquoi le guide considère-t-il cela comme problématique du point de vue professionnel, même si l'incident est réellement clos ?", opts:["Parce qu'une intervention non documentée est difficilement reproductible, contrôlable et transférable, et ne constitue pas une preuve de maîtrise", "Parce que sans documentation, l'incident n'est techniquement pas considéré comme résolu par le système de supervision", "Parce que la documentation est uniquement exigée pour les demandes de service, jamais pour les incidents", "Parce que cela empêche automatiquement la clôture du ticket dans l'outil ITSM"], correct:0, exp:"« POINT JURY » du guide : la documentation est un élément du maintien en condition opérationnelle et une preuve de compétence professionnelle recherchée par le jury, indépendamment du succès technique de l'intervention elle-même.", srcLabel:"cf. 1.8 — Documentation et traçabilité"},
+
+{comp:"CP2", src:"2.1 / MÉTHODE", q:"Un utilisateur ne parvient plus à accéder à une application web interne. Selon la méthode de diagnostic par couches recommandée par le guide (« du plus proche au plus éloigné »), quel élément doit être vérifié en tout premier lieu, avant même l'adressage IP ?", opts:["Le lien physique et l'appartenance VLAN du poste", "La résolution DNS du nom de l'application", "Les règles de filtrage du pare-feu applicatif", "La disponibilité du service applicatif lui-même"], correct:0, exp:"L'ordre recommandé est : lien physique → VLAN → adresse IP → passerelle → routage → filtrage → résolution DNS → service applicatif. Commencer par le plus proche évite d'explorer des causes complexes alors qu'un câble débranché ou un mauvais VLAN suffit à expliquer la panne.", srcLabel:"cf. 2.1 — Méthode de diagnostic par couches"},
+{comp:"CP2", src:"2.2", q:"Combien d'adresses hôtes réellement utilisables offre un sous-réseau IPv4 en /27 (masque 255.255.255.224) ?", opts:["30", "32", "62", "14"], correct:0, exp:"Un /27 offre 32 adresses totales, dont 2 réservées (adresse réseau et adresse de broadcast), soit 30 hôtes utilisables — le tableau du guide (2.2) donne directement cette correspondance préfixe/hôtes usuels.", srcLabel:"cf. 2.2 — IPv4, masque et routage"},
+{comp:"CP2", src:"2.2 / ATTENTION", q:"Un poste peut joindre sans problème tous les autres postes de son propre sous-réseau, mais ne parvient à atteindre aucune ressource située en dehors de celui-ci. Que faut-il vérifier en priorité, sachant que la communication locale peut fonctionner même si cet élément est mal configuré ?", opts:["La passerelle par défaut configurée sur le poste", "L'adresse MAC de la carte réseau du poste", "Le nombre de VLAN configurés sur le commutateur d'accès", "La version du système d'exploitation du poste"], correct:0, exp:"Le guide alerte précisément sur ce piège : « une communication locale peut fonctionner alors que la passerelle est incorrecte ». Il faut tester séparément l'hôte local, la passerelle, une adresse distante et la résolution DNS.", srcLabel:"cf. 2.2 — ATTENTION"},
+{comp:"CP2", src:"2.3", q:"Quelle affirmation décrit correctement la différence entre la table ARP d'un hôte et la table MAC d'un commutateur ?", opts:["La table ARP associe une adresse IPv4 locale à une adresse MAC sur un hôte, tandis que la table MAC associe une adresse MAC à un port et à un VLAN sur le commutateur", "Les deux tables contiennent exactement les mêmes informations et sont interchangeables", "La table MAC ne concerne que les adresses IPv6, la table ARP que les adresses IPv4", "La table ARP est gérée par le commutateur, la table MAC par l'hôte"], correct:0, exp:"ARP (couche 3→2) résout une IP locale en MAC sur un hôte ou un équipement L3 ; la table MAC (couche 2) d'un commutateur associe chaque MAC apprise à un port et un VLAN — deux mécanismes complémentaires mais distincts.", srcLabel:"cf. 2.3 — ARP, MAC et commutation"},
+{comp:"CP2", src:"2.4 / POINT DE VIGILANCE", q:"Un administrateur vient de créer un nouveau VLAN sur un commutateur et d'y placer plusieurs ports. Cela suffit-il, à lui seul, à permettre la communication entre ce nouveau VLAN et les autres VLAN existants ?", opts:["Non : il faut en plus une passerelle de niveau 3 (SVI ou routeur) et des règles de filtrage autorisant explicitement le flux", "Oui, la création d'un VLAN active automatiquement le routage vers tous les autres VLAN", "Non, un nouveau VLAN ne peut jamais communiquer avec les autres, quelle que soit la configuration", "Oui, à condition que le port soit configuré en mode trunk uniquement"], correct:0, exp:"Le guide distingue clairement segmentation de niveau 2 (VLAN), passerelle de niveau 3 (SVI, routage inter-VLAN) et politique de filtrage : la création d'un VLAN segmente, mais ne crée ni le routage ni les autorisations de communication.", srcLabel:"cf. 2.4 — POINT DE VIGILANCE"},
+{comp:"CP2", src:"2.5", q:"Un commutateur non autorisé est raccordé par erreur sur un port du réseau et tente de s'annoncer comme la meilleure racine (root bridge) du Spanning Tree. Quel mécanisme est spécifiquement conçu pour empêcher ce port de devenir un chemin vers un root bridge non autorisé ?", opts:["Root Guard", "BPDU Guard", "Storm control", "PortFast / edge"], correct:0, exp:"Root Guard empêche spécifiquement un port de devenir un chemin vers un root bridge non légitime en le plaçant en état de blocage root-inconsistent. BPDU Guard, lui, désactive un port edge qui reçoit une BPDU alors qu'il ne devrait en recevoir aucune — un mécanisme complémentaire mais différent.", srcLabel:"cf. 2.5 — Boucles, STP et sécurisation des ports"},
+{comp:"CP2", src:"2.6 / MÉMO", q:"Pourquoi la cohérence des paramètres de port (vitesse, duplex, VLAN autorisés...) est-elle indispensable pour former un EtherChannel fonctionnel entre deux commutateurs ?", opts:["Parce que les liens agrégés doivent être traités comme un seul lien logique homogène ; une incohérence empêche la formation du groupe ou provoque un dysfonctionnement", "Parce que chaque lien membre continue d'être configuré et exploité de façon totalement indépendante", "Parce que la cohérence des paramètres n'a d'impact que sur la consommation électrique des équipements", "Parce que LACP corrige automatiquement toute incohérence de configuration entre les deux extrémités"], correct:0, exp:"EtherChannel/LAG regroupe plusieurs liens physiques en un lien logique unique : des paramètres divergents entre membres (VLAN autorisés, vitesse, mode trunk/access) empêchent la formation du groupe ou créent un comportement instable.", srcLabel:"cf. 2.6 — Agrégation de liens et haute disponibilité"},
+{comp:"CP2", src:"2.6", q:"Que fournit concrètement une adresse IP virtuelle partagée entre plusieurs routeurs dans un mécanisme de redondance de passerelle tel que HSRP ou VRRP ?", opts:["Une passerelle par défaut redondante, transparente pour les clients, indépendante du routeur physiquement actif à un instant donné", "Une répartition automatique de la charge entre tous les routeurs participants, à parts strictement égales", "Une agrégation des liens physiques de tous les routeurs participants en une seule interface logique", "Un chiffrement automatique de tout le trafic transitant par cette passerelle"], correct:0, exp:"Le guide précise : « une adresse IP virtuelle est utilisée par les clients » — ceux-ci pointent toujours vers cette IP unique, quel que soit le routeur physiquement actif, ce qui élimine la passerelle comme point unique de défaillance. Ni HSRP ni VRRP ne font, à eux seuls, de répartition de charge.", srcLabel:"cf. 2.6 — Agrégation de liens et haute disponibilité"},
+{comp:"CP2", src:"2.7", q:"Une route vers un serveur distant est correctement présente dans la table de routage d'un équipement. Cela garantit-il, à lui seul, que le trafic de retour atteindra bien sa destination et que ce flux sera autorisé de bout en bout ?", opts:["Non : la présence d'une route ne garantit ni le retour du trafic (routage à l'autre extrémité) ni l'autorisation du flux par un pare-feu éventuel", "Oui, une route présente dans la table garantit systématiquement l'aller-retour complet du trafic", "Oui, à condition que la route ait été apprise dynamiquement et non configurée statiquement", "Non, mais uniquement si le protocole de routage utilisé est OSPF"], correct:0, exp:"Le guide insiste : une route déterminant le chemin aller n'implique ni que le chemin retour existe symétriquement, ni qu'un pare-feu sur ce chemin autorise effectivement le flux — trois vérifications distinctes à mener lors d'un diagnostic.", srcLabel:"cf. 2.7 — Routage statique et dynamique"},
+{comp:"CP2", src:"2.8", q:"Quelle affirmation distingue correctement un pare-feu stateful d'une simple liste de contrôle d'accès (ACL) ?", opts:["Le pare-feu stateful suit l'état des connexions et autorise automatiquement le trafic de retour associé à une connexion déjà acceptée", "Une ACL et un pare-feu stateful appliquent exactement la même logique de filtrage, seul le nom diffère", "Une ACL ne peut filtrer que le trafic sortant, jamais le trafic entrant", "Le pare-feu stateful ne peut fonctionner qu'en association avec un VPN site-à-site"], correct:0, exp:"Le suivi d'état (stateful) permet au pare-feu de reconnaître qu'un paquet entrant correspond à la réponse légitime d'une connexion sortante déjà autorisée, sans qu'une règle explicite distincte soit nécessaire pour ce trafic retour — une ACL classique évalue chaque paquet selon des critères fixes.", srcLabel:"cf. 2.8 — Pare-feu, ACL, NAT et DMZ"},
+{comp:"CP2", src:"2.8", q:"Une entreprise configure le NAT sur son routeur de sortie pour masquer les adresses IP privées de son réseau interne. Peut-on considérer cette configuration NAT, à elle seule, comme une véritable politique de sécurité ?", opts:["Non : le NAT traduit des adresses mais ne constitue pas à lui seul une politique de sécurité", "Oui, le NAT empêche à lui seul toute intrusion provenant d'Internet", "Oui, le NAT remplace entièrement la nécessité d'un pare-feu", "Non, le NAT ne peut être utilisé que dans les réseaux IPv6"], correct:0, exp:"Le guide est explicite : « NAT traduit des adresses ; ne constitue pas à lui seul une politique de sécurité ». La sécurité réelle du périmètre repose sur des règles de filtrage explicitement justifiées, pas sur le seul masquage d'adressage.", srcLabel:"cf. 2.8 — Pare-feu, ACL, NAT et DMZ"},
+{comp:"CP2", src:"2.9", q:"Par rapport à un VPN site-à-site classique, quelle exigence de sécurité supplémentaire est spécifiquement attendue pour un VPN d'accès distant utilisé par un collaborateur nomade ?", opts:["L'authentification multifacteur (MFA), le contrôle de conformité du poste, des profils d'accès et une journalisation dédiée à l'utilisateur", "Aucune exigence supplémentaire, les deux types de VPN partagent exactement les mêmes contrôles de sécurité", "L'utilisation exclusive du protocole IPsec, à l'exclusion de tout autre protocole", "La suppression de toute authentification pour simplifier la connexion de l'utilisateur nomade"], correct:0, exp:"Un VPN site-à-site sécurise une interconnexion entre réseaux (chiffrement, authentification des pairs, filtrage) ; un VPN d'accès distant ajoute des exigences centrées sur l'utilisateur individuel : MFA, contrôle du poste, profils différenciés et journalisation nominative.", srcLabel:"cf. 2.9 — VPN et accès distants"},
+{comp:"CP2", src:"2.11", q:"Quelle différence fondamentale distingue un IDS d'un IPS ?", opts:["L'IDS détecte et alerte sans nécessairement interrompre le trafic, tandis que l'IPS détecte ET peut bloquer ou interrompre les flux malveillants", "L'IDS et l'IPS désignent la même technologie, appliquée respectivement au réseau et aux postes de travail", "L'IPS ne peut fonctionner que sur des flux chiffrés, l'IDS uniquement sur des flux en clair", "L'IDS bloque systématiquement le trafic, l'IPS se contente de l'analyser passivement"], correct:0, exp:"IDS = détection et alerte, sans action directe sur le trafic (posture passive). IPS = détection ET capacité de blocage/interruption des flux identifiés comme malveillants (posture active, en coupure).", srcLabel:"cf. 2.11 — IDS, IPS et segmentation"},
+
+{comp:"CP3", src:"3.1", q:"Dans Active Directory, quel élément représente la limite globale de l'annuaire, du schéma et de certaines relations d'approbation, englobant potentiellement plusieurs domaines ?", opts:["La forêt", "Le domaine", "L'unité d'organisation (OU)", "Le catalogue global"], correct:0, exp:"La forêt est la limite de sécurité et de schéma la plus large d'un environnement AD ; le domaine est un sous-ensemble logique partageant une base AD DS, un espace de noms et des stratégies au sein de cette forêt.", srcLabel:"cf. 3.1 — Active Directory : concepts fondamentaux"},
+{comp:"CP3", src:"3.1 / ATTENTION", q:"Un poste rejoint un domaine Active Directory mais reste configuré avec un serveur DNS public comme serveur DNS principal, au lieu des contrôleurs de domaine. Quel est le risque immédiat le plus probable ?", opts:["Des échecs de localisation des contrôleurs de domaine, d'authentification et de réplication, car AD dépend fortement d'un DNS correctement configuré", "Aucun risque, le DNS public accélère au contraire la résolution des enregistrements internes de l'annuaire", "Le poste ne pourra techniquement jamais démarrer sous Windows", "La stratégie de mots de passe du domaine sera automatiquement désactivée"], correct:0, exp:"« Active Directory dépend fortement du DNS. Un client de domaine doit utiliser les serveurs DNS de l'annuaire, et non un DNS public comme serveur principal » — les enregistrements SRV nécessaires à la localisation des services AD ne sont hébergés que par les DNS intégrés au domaine.", srcLabel:"cf. 3.1 — ATTENTION"},
+{comp:"CP3", src:"3.2", q:"Des utilisateurs d'un domaine Active Directory commencent à subir des échecs d'authentification aléatoires, alors que leurs identifiants sont corrects. Quelle cause, en lien avec Kerberos, doit être vérifiée en priorité ?", opts:["Une dérive importante de l'horloge entre le poste client et les contrôleurs de domaine, la synchronisation NTP étant essentielle au bon fonctionnement de Kerberos", "Une erreur de câblage réseau au niveau de la couche physique uniquement", "Un défaut d'alimentation électrique du commutateur d'accès", "Une mauvaise résolution des noms NetBIOS à elle seule, sans lien avec Kerberos"], correct:0, exp:"Kerberos utilise des tickets horodatés et tolère une fenêtre de dérive d'horloge très limitée : une désynchronisation NTP significative entre client et contrôleur de domaine provoque des refus d'authentification malgré des identifiants valides.", srcLabel:"cf. 3.2 — Authentification, Kerberos et synchronisation du temps"},
+{comp:"CP3", src:"3.3 / MÉMO", q:"Selon le modèle AGDLP recommandé pour structurer les autorisations dans Active Directory, dans quel ordre les éléments doivent-ils s'articuler ?", opts:["Comptes utilisateurs → groupes globaux → groupes locaux de domaine → permissions sur la ressource", "Permissions sur la ressource → groupes locaux de domaine → groupes globaux → comptes utilisateurs", "Comptes utilisateurs → permissions sur la ressource directement, sans passer par des groupes", "Groupes locaux de domaine → comptes utilisateurs → groupes globaux → permissions"], correct:0, exp:"AGDLP : les comptes (A) sont placés dans des groupes globaux (G), eux-mêmes placés dans des groupes locaux de domaine (DL), auxquels sont enfin attribuées les permissions (P) sur la ressource — une structuration qui facilite la gestion des droits à grande échelle.", srcLabel:"cf. 3.3 — Groupes, autorisations et modèle AGDLP"},
+{comp:"CP3", src:"3.3 / MÉMO", q:"Pour un accès à un dossier partagé via SMB, les permissions de partage autorisent la modification, mais les permissions NTFS sur le même dossier n'autorisent que la lecture. Quel sera le droit effectif de l'utilisateur ?", opts:["Lecture seule, car la combinaison la plus restrictive entre permissions de partage et permissions NTFS détermine l'accès effectif", "Modification, car les permissions de partage priment toujours sur les permissions NTFS", "Un accès total, car les deux jeux de permissions s'additionnent au lieu de se combiner", "Aucun accès, car une divergence entre les deux jeux de permissions bloque systématiquement l'accès"], correct:0, exp:"Le guide précise : « les permissions de partage et NTFS s'appliquent ensemble ; la combinaison la plus restrictive détermine l'accès effectif ». Ici, la restriction NTFS (lecture seule) l'emporte sur l'autorisation de partage (modification).", srcLabel:"cf. 3.3 — Groupes, autorisations et modèle AGDLP"},
+{comp:"CP3", src:"3.4", q:"Selon l'ordre de traitement habituel des stratégies de groupe (GPO) dans Active Directory — Local, Site, Domaine, OU — quelle GPO l'emporte généralement en cas de paramètres contradictoires entre deux niveaux ?", opts:["La GPO liée à l'unité d'organisation (OU) la plus proche de l'objet, appliquée en dernier dans l'ordre de traitement", "La GPO locale de la machine, qui prévaut toujours sur toutes les GPO du domaine", "La GPO liée au site, qui prévaut systématiquement sur celle liée à l'OU", "La première GPO créée chronologiquement dans l'annuaire, quelle que soit sa liaison"], correct:0, exp:"L'ordre LSDOU (Local, Site, Domaine, OU) signifie que les GPO liées aux OU les plus proches de l'objet sont traitées en dernier et ont donc, sauf mécanisme particulier (blocage d'héritage, application forcée), la priorité la plus élevée.", srcLabel:"cf. 3.4 — Stratégies de groupe"},
+{comp:"CP3", src:"3.4", q:"Un administrateur a modifié une GPO de sécurité et veut vérifier concrètement quels paramètres sont effectivement appliqués sur un poste ciblé, en tenant compte de l'ensemble des GPO qui s'y appliquent. Quel outil correspond à cette vérification ?", opts:["Un rapport de jeu de stratégie résultant, généré par exemple avec gpresult", "La commande repadmin /replsummary, dédiée à la réplication Active Directory", "La commande dcdiag, dédiée au diagnostic d'un contrôleur de domaine", "La console de gestion DHCP, qui affiche également les GPO appliquées"], correct:0, exp:"gpresult (ou le jeu de stratégie résultant / RSoP) permet de vérifier concrètement l'ensemble des paramètres réellement appliqués à un objet donné, après combinaison de toutes les GPO en jeu — indispensable avant tout déploiement large selon le guide.", srcLabel:"cf. 3.4 — Stratégies de groupe"},
+{comp:"CP3", src:"3.5", q:"Dans un domaine Active Directory, à quoi servent principalement les enregistrements DNS de type SRV ?", opts:["Permettre aux clients et aux membres du domaine de localiser dynamiquement les services de l'annuaire, comme les contrôleurs de domaine", "Traduire un nom de machine en adresse IPv4, à la manière d'un enregistrement A classique", "Définir le serveur de messagerie responsable d'un domaine, à la manière d'un enregistrement MX", "Publier un alias pointant vers un autre nom de domaine, à la manière d'un enregistrement CNAME"], correct:0, exp:"Les enregistrements SRV sont le mécanisme par lequel les clients du domaine localisent dynamiquement les services AD (contrôleurs de domaine, LDAP, Kerberos...), avec mise à jour dynamique sécurisée et réplication intégrée à l'annuaire.", srcLabel:"cf. 3.5 — DNS et DHCP"},
+{comp:"CP3", src:"3.6", q:"Sous Linux, à quoi sert précisément la valeur umask configurée sur un système ?", opts:["Elle détermine les permissions retirées par défaut lors de la création d'un nouveau fichier ou répertoire", "Elle définit l'identifiant numérique unique attribué à chaque nouvel utilisateur créé", "Elle chiffre automatiquement le contenu de tout nouveau fichier créé sur le système", "Elle liste les commandes qu'un utilisateur est autorisé à exécuter avec sudo"], correct:0, exp:"umask est un masque soustractif : il retire certaines permissions par défaut aux fichiers/répertoires nouvellement créés, par rapport aux permissions maximales par défaut du système — un réglage direct de sécurité par défaut.", srcLabel:"cf. 3.6 — Linux : identités, permissions et élévation"},
+{comp:"CP3", src:"3.6", q:"Pourquoi recommande-t-on d'éditer le fichier /etc/sudoers exclusivement avec la commande visudo plutôt qu'avec un éditeur de texte classique ?", opts:["Parce que visudo verrouille le fichier et vérifie la syntaxe avant d'enregistrer, évitant qu'une erreur ne rende sudo inutilisable pour tout le système", "Parce qu'un éditeur de texte classique est techniquement incapable d'ouvrir ce fichier", "Parce que visudo chiffre automatiquement le contenu du fichier sudoers", "Parce que /etc/sudoers n'existe que sur les systèmes utilisant systemd"], correct:0, exp:"visudo protège contre les erreurs de syntaxe qui, dans un fichier aussi critique que /etc/sudoers, pourraient bloquer toute élévation de privilèges sur le système — une politique sudo mal éditée peut rendre l'administration impossible.", srcLabel:"cf. 3.6 — Linux : identités, permissions et élévation"},
+{comp:"CP3", src:"3.9 / ATTENTION", q:"Lors de la vérification de la validité d'un certificat TLS présenté par un serveur, quels critères doivent tous être contrôlés selon le guide, en plus de la simple présence d'un certificat ?", opts:["La correspondance avec le nom utilisé, la période de validité, une chaîne de confiance correcte jusqu'à une autorité racine reconnue, et l'absence de révocation", "Uniquement la taille en bits de la clé publique associée au certificat", "Uniquement la date d'émission du certificat, sans autre critère", "Uniquement le fait que le certificat ait été émis par une autorité de certification, quelle qu'elle soit"], correct:0, exp:"Le guide liste quatre critères cumulatifs : correspondance du nom, période de validité, chaîne de confiance correcte, absence de révocation (via CRL/OCSP). Le renouvellement doit en outre être supervisé avant expiration.", srcLabel:"cf. 3.9 — PKI et certificats"},
+{comp:"CP3", src:"3.10", q:"Un utilisateur s'authentifie avec un mot de passe, puis reçoit un code à usage unique par SMS sur un téléphone qui est lui-même déverrouillé... par ce même mot de passe. Ce dispositif respecte-t-il pleinement le principe d'authentification multifacteur (MFA) tel que défini dans le guide ?", opts:["Pas totalement : le MFA suppose au moins deux facteurs réellement indépendants (connaissance, possession, caractéristique inhérente), ce que ce scénario ne garantit pas complètement", "Oui, dès qu'au moins deux étapes de saisie distinctes sont demandées à l'utilisateur, il s'agit toujours de MFA au sens strict", "Non, le MFA ne peut reposer que sur des applications d'authentification dédiées, jamais sur un SMS", "Oui, car un code par SMS constitue à lui seul les deux facteurs requis par définition"], correct:0, exp:"Le guide définit le MFA comme la combinaison d'au moins deux facteurs indépendants. Si le second facteur (le téléphone) est déverrouillable par le premier facteur (le même mot de passe), l'indépendance réelle des facteurs est affaiblie — un point de vigilance pertinent à l'oral.", srcLabel:"cf. 3.10 — MFA, OTP, SSO et Zero Trust"},
+
+{comp:"CP3", src:"3.5", q:"Un poste client se trouve sur un sous-réseau distinct de celui du serveur DHCP disponible sur le site. Quel mécanisme permet à ce poste d'obtenir malgré tout un bail DHCP auprès de ce serveur distant ?", opts:["Un relais DHCP, qui transmet les requêtes entre sous-réseaux lorsque le serveur n'est pas directement présent sur le segment local", "Le DHCP Failover, qui assure la continuité de service entre deux serveurs DHCP redondants", "Une réservation DHCP, qui attribue une adresse fixe à une adresse MAC donnée", "Une zone DNS secondaire, qui réplique les enregistrements d'une zone principale"], correct:0, exp:"Le relais DHCP (souvent porté par le routeur ou le commutateur L3 du segment local) transmet les requêtes DHCP vers un serveur situé sur un autre sous-réseau ; le DHCP Failover, lui, répond à un besoin différent : la continuité entre deux serveurs redondants.", srcLabel:"cf. 3.5 — DNS et DHCP"},
+{comp:"CP4", src:"4.1", q:"Quelle est la différence fondamentale entre un hyperviseur de type 1 et un hyperviseur de type 2 selon le guide ?", opts:["Le type 1 s'exécute directement sur le matériel et héberge les machines virtuelles, tandis que le type 2 s'exécute au-dessus d'un système d'exploitation hôte", "Le type 1 ne peut héberger qu'une seule machine virtuelle à la fois, contrairement au type 2", "Le type 2 offre systématiquement de meilleures performances que le type 1 grâce à l'OS hôte", "Seul le type 1 permet la création de templates et de clones de machines virtuelles"], correct:0, exp:"Hyperviseur type 1 = exécution directe sur le matériel (bare-metal), sans OS hôte intermédiaire ; type 2 = application s'exécutant au-dessus d'un système d'exploitation hôte déjà installé, avec une couche d'abstraction supplémentaire.", srcLabel:"cf. 4.1 — Hyperviseurs et machines virtuelles"},
+{comp:"CP4", src:"4.2", q:"Un hyperviseur alloue 32 vCPU au total à ses machines virtuelles, alors que le serveur physique ne dispose que de 16 cœurs physiques. Que décrit correctement cette situation ?", opts:["De la surallocation (overcommitment) : elle améliore l'utilisation globale des ressources mais peut provoquer de la contention si toutes les VM sont sollicitées simultanément", "Une configuration techniquement impossible, un hyperviseur ne pouvant jamais allouer plus de vCPU que de cœurs physiques disponibles", "Une erreur de sécurité critique nécessitant l'arrêt immédiat de toutes les machines virtuelles concernées", "Une fonctionnalité exclusivement réservée aux environnements de test, jamais rencontrée en production"], correct:0, exp:"« Une vCPU n'équivaut pas nécessairement à un cœur physique dédié. La surallocation améliore l'utilisation globale mais peut provoquer de la contention. » C'est une pratique courante et légitime, à condition d'être dimensionnée et surveillée (CPU ready notamment).", srcLabel:"cf. 4.2 — Allocation, surallocation et performance"},
+{comp:"CP4", src:"4.3 / POINT DE VIGILANCE", q:"Un cluster de virtualisation est configuré avec un mécanisme de haute disponibilité (HA) qui redémarre automatiquement les VM sur un autre hôte en cas de panne matérielle. L'équipe en conclut qu'aucune sauvegarde n'est désormais nécessaire pour ces VM. Ce raisonnement est-il correct ?", opts:["Non : la haute disponibilité ne remplace pas la sauvegarde, car HA traite la panne d'un composant, mais pas l'erreur humaine, la corruption de données ou la suppression accidentelle", "Oui, un cluster HA rend par définition toute sauvegarde redondante et inutile", "Oui, à condition que le cluster comporte au moins trois hôtes physiques distincts", "Non, mais uniquement si le cluster ne dispose pas de stockage partagé entre les hôtes"], correct:0, exp:"Point de vigilance explicite du guide : la HA redémarre une VM ailleurs après une panne d'hôte, mais ne protège pas contre une suppression accidentelle, une corruption applicative ou une erreur humaine — situations où seule une sauvegarde indépendante permet de revenir en arrière.", srcLabel:"cf. 4.3 — POINT DE VIGILANCE"},
+{comp:"CP4", src:"4.4 / ATTENTION", q:"Après une modification de configuration réseau sur un hyperviseur, plusieurs machines virtuelles perdent simultanément toute connectivité réseau. Quelle cause, mise en avant par le guide, est la plus probable ?", opts:["Une incohérence entre les paramètres VLAN du port group virtuel et ceux du port physique du commutateur (trunk, VLAN natif, uplink mal configuré)", "Une panne simultanée et coïncidente de toutes les cartes réseau physiques des machines virtuelles concernées", "Une expiration groupée des licences d'exploitation de toutes les VM concernées au même instant", "Un changement de fuseau horaire appliqué automatiquement par l'hyperviseur"], correct:0, exp:"Le guide prévient : « le port group et le port physique du commutateur doivent utiliser des paramètres VLAN cohérents. Une erreur de trunk, de VLAN natif ou d'uplink peut isoler plusieurs VM simultanément » — un scénario de panne réseau virtualisée classique.", srcLabel:"cf. 4.4 — ATTENTION"},
+{comp:"CP4", src:"4.5 / MÉMO", q:"Quelle affirmation distingue correctement le SAN, la LUN et le datastore dans une infrastructure de stockage virtualisé ?", opts:["Le SAN est le réseau de stockage, la LUN est un volume logique en mode bloc présenté par ce réseau, et le datastore est l'espace exploité par l'hyperviseur au-dessus de cette LUN", "Ces trois termes désignent exactement la même réalité technique, utilisée dans des contextes différents", "Le datastore est le réseau physique de stockage, tandis que le SAN désigne l'espace exploité par l'hyperviseur", "La LUN est un protocole de transport, comme iSCSI ou Fibre Channel, et non une unité de stockage"], correct:0, exp:"Le guide le précise explicitement (MÉMO 4.5) : SAN = réseau de stockage ; LUN = volume logique bloc présenté par ce réseau ; datastore = espace que l'hyperviseur exploite pour stocker les fichiers ou objets des VM au-dessus de cette LUN.", srcLabel:"cf. 4.5 — Stockage : DAS, NAS, SAN et datastores"},
+{comp:"CP4", src:"4.6", q:"Un système de stockage utilise du RAID pour améliorer sa disponibilité et ses performances. Le RAID peut-il, à lui seul, être considéré comme une stratégie de sauvegarde ?", opts:["Non : le RAID améliore la disponibilité ou la performance selon le niveau choisi, mais ne constitue pas une sauvegarde des données", "Oui, un niveau RAID suffisamment redondant remplace entièrement toute politique de sauvegarde", "Oui, mais uniquement pour les niveaux RAID utilisant de la parité (comme RAID 5)", "Non, car le RAID ne fonctionne que sur des supports de stockage en mode fichier, jamais en mode bloc"], correct:0, exp:"Le RAID protège contre la panne physique d'un ou plusieurs disques selon le niveau, mais une suppression accidentelle, une corruption logique ou un chiffrement par rançongiciel se répercute identiquement sur tous les disques du RAID — d'où la nécessité d'une sauvegarde indépendante et testée.", srcLabel:"cf. 4.6 — RAID, ZFS et résilience du stockage"},
+{comp:"CP4", src:"4.8 / MÉMO", q:"Dans un modèle de service cloud IaaS (Infrastructure as a Service), quel élément reste principalement à la charge du client, selon la répartition des responsabilités décrite par le guide ?", opts:["Les systèmes d'exploitation invités, les applications, les données, les identités et les configurations réseau de la ressource fournie", "Le matériel physique, le datacenter et la couche de virtualisation sous-jacente", "L'exécution (runtime) et le système d'exploitation, entièrement gérés par le client dans tous les modèles cloud", "Rien : en IaaS, le fournisseur assume l'intégralité de la responsabilité, y compris les données du client"], correct:0, exp:"En IaaS, le fournisseur gère le matériel, le datacenter et la virtualisation ; le client reste responsable de l'OS invité, des applications, des données, des identités et de la configuration réseau de sa ressource — contrairement au PaaS (où le fournisseur gère aussi l'OS et le runtime) et au SaaS (application complète fournie).", srcLabel:"cf. 4.8 — Modèles de cloud"},
+{comp:"CP4", src:"4.9", q:"Quelle différence distingue une région d'une zone de disponibilité chez un fournisseur cloud ?", opts:["La région est une zone géographique regroupant les infrastructures du fournisseur, tandis qu'une zone de disponibilité est un emplacement distinct au sein de cette région, conçu pour limiter les pannes communes", "Une région et une zone de disponibilité désignent exactement le même périmètre géographique", "Une zone de disponibilité regroupe systématiquement plusieurs régions différentes", "La zone de disponibilité concerne uniquement les services SaaS, jamais les services IaaS ou PaaS"], correct:0, exp:"Une région regroupe plusieurs zones de disponibilité physiquement séparées (alimentation, réseau, parfois bâtiment distincts) au sein d'une même zone géographique, afin qu'une panne localisée dans une zone n'affecte pas les autres zones de la même région.", srcLabel:"cf. 4.9 — Cloud public, privé, hybride et multicloud"},
+{comp:"CP4", src:"4.10", q:"Lors d'un audit de consommation cloud, on découvre plusieurs disques non attachés à aucune machine virtuelle et de nombreux snapshots anciens jamais supprimés. Quel est l'impact principal généralement associé à ce type de ressources orphelines ?", opts:["Un surcoût inutile, ces ressources continuant à être facturées alors qu'elles ne servent plus aucun usage actif", "Une amélioration automatique des performances du reste de l'infrastructure cloud", "Un renforcement automatique de la sécurité globale de l'environnement cloud", "Aucun impact, ces ressources étant systématiquement gratuites chez tous les fournisseurs cloud"], correct:0, exp:"Le guide recommande explicitement de suivre les ressources orphelines (disques non attachés, snapshots oubliés, adresses ou services inutilisés) car elles génèrent un coût d'exploitation récurrent sans apporter de valeur, d'où l'usage d'étiquettes, de budgets et d'alertes de consommation.", srcLabel:"cf. 4.10 — Coûts, capacité et consommation à l'usage"},
+{comp:"CP4", src:"4.11 / ATTENTION", q:"Un conteneur applicatif est présenté comme équivalent à une machine virtuelle complète pour justifier l'absence de mesures de durcissement spécifiques (image minimale, compte non root, secrets externalisés). Ce raisonnement est-il fondé selon le guide ?", opts:["Non : un conteneur partage le noyau de l'hôte et ne doit pas être considéré comme une VM complète ; images minimales, comptes non root, secrets externes et analyse de vulnérabilités restent essentiels", "Oui, un conteneur offre exactement le même niveau d'isolation qu'une machine virtuelle complète", "Oui, car un conteneur embarque systématiquement son propre noyau indépendant de l'hôte", "Non, mais uniquement pour les conteneurs déployés en dehors d'un cluster Kubernetes"], correct:0, exp:"« Un conteneur partage le noyau de l'hôte. Il ne doit pas être considéré comme une machine virtuelle complète. » L'isolation étant plus faible qu'avec une VM, les bonnes pratiques (image minimale, non-root, secrets externes, scan de vulnérabilités du registry) sont d'autant plus nécessaires.", srcLabel:"cf. 4.11 — Conteneurs"},
+{comp:"CP4", src:"4.12", q:"Dans Kubernetes, quel objet fournit un point d'accès réseau stable à un ensemble de pods, même lorsque ceux-ci sont recréés ou redéployés avec de nouvelles adresses ?", opts:["Le Service", "Le Pod", "Le ConfigMap", "Le Namespace"], correct:0, exp:"Le Service expose un point d'accès stable (nom, IP virtuelle) vers un ensemble de pods sélectionnés dynamiquement, indépendamment de leur cycle de vie individuel. Le Pod est l'unité de déploiement elle-même, le ConfigMap stocke de la configuration non sensible, et le Namespace sépare logiquement les objets.", srcLabel:"cf. 4.12 — Principes de Kubernetes"}
+];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let locked = false;
+
+const screenIntro = document.getElementById("screenIntro");
+const screenQuiz = document.getElementById("screenQuiz");
+const screenResults = document.getElementById("screenResults");
+const topbar = document.getElementById("topbar");
+
+document.getElementById("startBtn").addEventListener("click", () => {
+  screenIntro.classList.add("hidden");
+  screenQuiz.classList.remove("hidden");
+  topbar.classList.remove("hidden");
+  renderQuestion();
+});
+
+function renderQuestion() {
+  locked = false;
+  const item = QUESTIONS[current];
+  document.getElementById("compChip").textContent = item.comp;
+  document.getElementById("qNumLabel").textContent = "Q" + (current + 1) + "/" + QUESTIONS.length;
+  document.getElementById("qText").textContent = item.q;
+  document.getElementById("progressFill").style.width = ((current) / QUESTIONS.length * 100) + "%";
+  document.getElementById("progressText").textContent = "Question " + (current + 1) + "/" + QUESTIONS.length;
+  const scoreSoFar = answers.filter((a,i) => a !== null && a === QUESTIONS[i].correct).length;
+  document.getElementById("scoreLiveText").textContent = "Score provisoire : " + scoreSoFar;
+
+  const explainBox = document.getElementById("explainBox");
+  explainBox.classList.remove("show");
+  explainBox.innerHTML = "";
+
+  const wrap = document.getElementById("optsWrap");
+  wrap.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  item.opts.forEach((optText, idx) => {
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.innerHTML = '<span class="letter">' + letters[idx] + '</span><span>' + optText + '</span>';
+    btn.addEventListener("click", () => selectAnswer(idx));
+    wrap.appendChild(btn);
+  });
+
+  document.getElementById("nextBtn").disabled = true;
+  document.getElementById("nextBtn").textContent = (current === QUESTIONS.length - 1) ? "Voir mon bilan →" : "Question suivante →";
+}
+
+function selectAnswer(idx) {
+  if (locked) return;
+  locked = true;
+  answers[current] = idx;
+  const item = QUESTIONS[current];
+  const opts = document.querySelectorAll("#optsWrap .opt");
+  opts.forEach((el, i) => {
+    el.classList.add("disabled");
+    if (i === item.correct) el.classList.add("correct");
+    if (i === idx && idx !== item.correct) el.classList.add("incorrect");
+    if (i === idx) el.classList.add("selected");
+  });
+  const explainBox = document.getElementById("explainBox");
+  explainBox.innerHTML = (idx === item.correct ? "<b>✓ Bonne réponse.</b> " : "<b>✗ Réponse incorrecte.</b> ") + item.exp + '<span class="src">' + item.srcLabel + '</span>';
+  explainBox.classList.add("show");
+  document.getElementById("nextBtn").disabled = false;
+}
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+});
+
+function showResults() {
+  screenQuiz.classList.add("hidden");
+  topbar.classList.add("hidden");
+  screenResults.classList.remove("hidden");
+
+  const total = QUESTIONS.length;
+  const score = answers.filter((a,i) => a === QUESTIONS[i].correct).length;
+  const pct = Math.round(score / total * 100);
+
+  document.getElementById("scoreVal").textContent = score;
+  const circumference = 339;
+  const offset = circumference - (pct/100)*circumference;
+  document.getElementById("gaugeCircle").style.strokeDashoffset = offset;
+
+  let levelLabel, levelDesc, levelColorVar;
+  if (pct >= 90) { levelLabel = "Prêt pour le jury"; levelDesc = "Vous maîtrisez les distinctions fines attendues à l'oral. Relisez uniquement vos erreurs ci-dessous et entraînez-vous à les reformuler en moins de deux minutes, comme recommandé par le guide (5.7)."; levelColorVar = "success"; }
+  else if (pct >= 75) { levelLabel = "Bon niveau, quelques distinctions à affiner"; levelDesc = "Le socle est solide. Reprenez la ou les compétences les moins bien notées et reformulez chaque point manqué à voix haute avant l'épreuve."; levelColorVar = "success"; }
+  else if (pct >= 60) { levelLabel = "Niveau correct, révision ciblée nécessaire"; levelDesc = "Plusieurs distinctions clés du guide (MCO/MCS, HA/sauvegarde, RTO/RPO...) restent à consolider. Rouvrez les sections indiquées dans le corrigé avant de vous présenter."; levelColorVar = "warning"; }
+  else if (pct >= 40) { levelLabel = "Fragile — travail de fond requis"; levelDesc = "Trop d'écarts pour se présenter sereinement à l'entretien technique. Reprenez méthodiquement chaque section du guide en dessous de 60% ci-dessous."; levelColorVar = "danger"; }
+  else { levelLabel = "À reprendre depuis le début"; levelDesc = "Le score indique qu'une relecture complète et active du guide (avec reformulation, section 'Méthode de révision recommandée') est nécessaire avant tout passage."; levelColorVar = "danger"; }
+
+  const badge = document.getElementById("levelBadge");
+  badge.textContent = levelLabel;
+  badge.style.background = "var(--" + levelColorVar + "-dim, var(--surface-2))";
+  badge.style.color = "var(--" + levelColorVar + ")";
+  badge.style.border = "1px solid var(--" + levelColorVar + ")";
+  document.getElementById("levelDesc").textContent = levelDesc;
+
+  const comps = ["CP1","CP2","CP3","CP4"];
+  const compStats = {};
+  comps.forEach(c => {
+    const idxs = QUESTIONS.map((q,i) => q.comp === c ? i : -1).filter(i => i >= 0);
+    const correctCount = idxs.filter(i => answers[i] === QUESTIONS[i].correct).length;
+    compStats[c] = { correct: correctCount, total: idxs.length, pct: Math.round(correctCount / idxs.length * 100) };
+  });
+
+  const barsWrap = document.getElementById("compBars");
+  barsWrap.innerHTML = "";
+  comps.forEach(c => {
+    const s = compStats[c];
+    const color = s.pct >= 75 ? "var(--success)" : s.pct >= 50 ? "var(--warning)" : "var(--danger)";
+    const row = document.createElement("div");
+    row.className = "barrow";
+    row.innerHTML = '<span class="lbl">' + c + " — " + COMP_NAMES[c] + '</span>' +
+      '<span class="track"><span class="fill" style="width:' + s.pct + '%; background:' + color + ';"></span></span>' +
+      '<span class="pct">' + s.correct + "/" + s.total + '</span>';
+    barsWrap.appendChild(row);
+  });
+
+  const sorted = comps.slice().sort((a,b) => compStats[b].pct - compStats[a].pct);
+  const strengths = sorted.filter(c => compStats[c].pct >= 65).slice(0,2);
+  const weaknesses = sorted.filter(c => compStats[c].pct < 65);
+  const strengthsList = document.getElementById("strengthsList");
+  const weaknessesList = document.getElementById("weaknessesList");
+  strengthsList.innerHTML = "";
+  weaknessesList.innerHTML = "";
+  if (strengths.length === 0) {
+    strengthsList.innerHTML = "<li>Aucune compétence au-dessus de 65% pour l'instant — voir le plan de révision à droite.</li>";
+  } else {
+    strengths.forEach(c => { const li = document.createElement("li"); li.textContent = c + " — " + COMP_NAMES[c] + " (" + compStats[c].pct + "%)"; strengthsList.appendChild(li); });
+  }
+  if (weaknesses.length === 0) {
+    weaknessesList.innerHTML = "<li>Aucune faiblesse marquée — toutes les compétences sont à 65% ou plus.</li>";
+  } else {
+    weaknesses.forEach(c => { const li = document.createElement("li"); li.textContent = c + " — " + COMP_NAMES[c] + " (" + compStats[c].pct + "%)"; weaknessesList.appendChild(li); });
+  }
+
+  renderReview("all");
+  document.querySelectorAll(".filterbtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filterbtn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderReview(btn.dataset.f);
+    });
+  });
+}
+
+function renderReview(filter) {
+  const list = document.getElementById("reviewList");
+  list.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  QUESTIONS.forEach((item, i) => {
+    const isCorrect = answers[i] === item.correct;
+    if (filter === "wrong" && isCorrect) return;
+    if (["CP1","CP2","CP3","CP4"].includes(filter) && item.comp !== filter) return;
+    const div = document.createElement("div");
+    div.className = "reviewitem " + (isCorrect ? "right" : "wrong");
+    const yourAnswerText = answers[i] === null ? "(sans réponse)" : letters[answers[i]] + ". " + item.opts[answers[i]];
+    div.innerHTML =
+      '<div class="rtop"><span class="chip">' + item.comp + '</span><span class="chip">' + (isCorrect ? "Correct" : "Erreur") + '</span></div>' +
+      '<div class="rq">' + (i+1) + ". " + item.q + '</div>' +
+      '<div class="ryour" style="color:' + (isCorrect ? "var(--success)" : "var(--danger)") + '">Votre réponse : ' + yourAnswerText + '</div>' +
+      (isCorrect ? "" : '<div class="rcorrect">Bonne réponse : ' + letters[item.correct] + ". " + item.opts[item.correct] + '</div>') +
+      '<div class="rexp">' + item.exp + '</div>' +
+      '<div class="rsrc">' + item.srcLabel + '</div>';
+    list.appendChild(div);
+  });
+}
+
+document.getElementById("restartBtn").addEventListener("click", () => {
+  current = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  screenResults.classList.add("hidden");
+  screenIntro.classList.remove("hidden");
+});
+</script>

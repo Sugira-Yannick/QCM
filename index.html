@@ -1,0 +1,162 @@
+<!--
+  Nomenclature des fichiers QCM : qcm-b{bloc}-{seq}-{slug}.html
+    bloc  : 1, 2 ou 3 (bloc de compétences RNCP37680)
+    seq   : numéro à 2 chiffres, 01 à 30, ordre de passage conseillé dans le bloc
+    slug  : 2 à 5 mots-clés en kebab-case, sans accent, décrivant le contenu
+  Exemples : qcm-b1-01-fondamentaux-cours-personnels.html
+             qcm-b2-03-diagnostic-panne-reseau.html
+  Pour ajouter un QCM : déposer le fichier ici en respectant ce nom, puis
+  copier un bloc <a> dans la section .modules du bloc concerné ci-dessous.
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portail QCM – Administrateur d'Infrastructures Sécurisées</title>
+  <style>
+    :root{
+      --bg:#071018;--bg2:#0c1722;--panel:#12212b;--panel2:#162934;--line:rgba(121,221,210,.18);--line-strong:rgba(121,221,210,.42);--text:#eef7fa;--muted:#a7bec6;--accent:#72dfd2;--accent2:#f4cb7e;--shadow:0 28px 70px rgba(0,0,0,.34);--radius-xl:30px;--radius-lg:22px;--radius-md:16px;--light-surface:#f8fbfc;--light-line:#d6e5ea;--light-text:#1f2933;--light-muted:#52606d;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;color:var(--text);font-family:"Aptos","Segoe UI","Trebuchet MS",sans-serif;background:radial-gradient(circle at top left, rgba(114,223,210,.14), transparent 26%),radial-gradient(circle at top right, rgba(244,203,126,.10), transparent 24%),linear-gradient(155deg,#051019 0%,#091521 46%,#061019 100%);scroll-behavior:smooth}
+    a{color:var(--accent);text-decoration:none}
+    .page-shell{width:min(1560px,calc(100vw - 28px));margin:14px auto 24px;display:grid;gap:18px}
+    .hero,.panel{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius-xl);background:linear-gradient(180deg,rgba(18,33,43,.95),rgba(12,24,33,.96));box-shadow:var(--shadow)}
+    .hero::before,.panel::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg, rgba(114,223,210,.10), transparent 38%),linear-gradient(320deg, rgba(244,203,126,.08), transparent 36%)}
+    .hero>*,.panel>*{position:relative;z-index:1}
+    .hero{padding:34px 34px 28px}
+    .eyebrow{margin:0 0 14px;color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.24em;text-transform:uppercase}
+    h1{margin:0;max-width:1080px;font-size:clamp(34px,4.8vw,64px);line-height:1.02;letter-spacing:-.04em}
+    .hero-copy{margin:18px 0 0;max-width:1080px;font-size:19px;line-height:1.7;color:var(--muted)}
+    .layout{display:grid;gap:18px;grid-template-columns:320px minmax(0,1fr);align-items:start}
+    .sidebar{position:sticky;top:14px;display:grid;gap:18px}
+    .panel{padding:22px}
+    .side-title{margin:0 0 14px;font-size:20px;letter-spacing:-.03em}
+    .nav ul{list-style:none;padding:0;margin:0}
+    .nav li+li{margin-top:12px}
+    .nav a{display:block;padding:14px 16px;border-radius:18px;border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.02);transition:.22s ease}
+    .nav a:hover,.nav a.active{transform:translateX(4px);border-color:var(--line-strong);background:rgba(114,223,210,.08)}
+    .meta{margin:0;color:var(--muted);font-size:14px;line-height:1.8}
+    .main{display:grid;gap:18px}
+    .native-source{color:var(--light-text);display:grid;gap:18px}
+    .native-source > :where(section,article,div){background:linear-gradient(180deg, rgba(248,251,252,.98), rgba(241,247,249,.98));border:1px solid var(--light-line);border-radius:24px;padding:28px;box-shadow:0 18px 40px rgba(3,18,26,.12)}
+    .native-source > :where(script,style){display:none}
+    .native-source h1,.native-source h2,.native-source h3,.native-source h4,.native-source h5,.native-source h6{color:var(--light-text);letter-spacing:-.03em}
+    .native-source h1{font-size:clamp(2.1rem,4vw,3.6rem);line-height:1.05;margin:0 0 1.2rem}
+    .native-source > h1{color:#eef7fa}
+    .native-source h2{font-size:clamp(1.6rem,2.8vw,2.2rem);margin:0 0 1rem;padding-bottom:.8rem;border-bottom:1px solid var(--light-line)}
+    .native-source h3{font-size:1.35rem;margin:1.7rem 0 .9rem}
+    .native-source p,.native-source li,.native-source td,.native-source th,.native-source blockquote,.native-source label{color:var(--light-text);line-height:1.8}
+    .native-source p,.native-source ul,.native-source ol,.native-source table,.native-source pre,.native-source blockquote{margin:0 0 1.1rem}
+    .native-source .subtitle,.native-source .note{font-size:1rem;line-height:1.85}
+    .native-source > .subtitle,.native-source > .note{color:var(--muted)}
+    .native-source :not(:scope) .subtitle,.native-source :not(:scope) .note{color:var(--light-muted)}
+    .native-source .modules{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin:1.6rem 0}
+    .native-source .modules a{display:flex;align-items:center;min-height:88px;padding:18px 20px;border-radius:20px;border:1px solid var(--light-line);background:linear-gradient(180deg,#ffffff,#f5fafb);color:var(--light-text);font-weight:700;line-height:1.5;box-shadow:0 16px 36px rgba(3,18,26,.08);transition:.22s}
+    .native-source .modules a:hover{transform:translateY(-2px);border-color:#96d4e8;background:linear-gradient(180deg,#eef9fc,#dff4fb);color:#0f4856}
+    .native-source .modules a .mtitle{display:block;font-size:16px}
+    .native-source .modules a .msub{display:block;font-weight:400;font-size:12.5px;color:var(--light-muted);margin-top:5px;letter-spacing:.01em}
+    .native-source .modules a.empty{cursor:default;opacity:.55;background:linear-gradient(180deg,#f8fbfc,#f1f7f9);pointer-events:none}
+    .native-source .badge{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border-radius:999px;border:1px solid var(--light-line);background:#fff;color:var(--light-muted);font-size:.78rem;font-weight:700;letter-spacing:.02em;margin:0 0 1rem}
+    @media (max-width:1200px){.layout{grid-template-columns:1fr}.sidebar{position:relative;top:auto}}
+    @media (max-width:860px){.page-shell{width:min(100vw - 14px,1560px)}.hero,.panel{padding:20px}.native-source > :where(section,article,div){padding:20px}h1{font-size:42px}}
+  </style>
+</head>
+<body>
+<div class="page-shell">
+  <section class="hero">
+    <p class="eyebrow">RNCP 37680 · TP-01352 · Administrateur d'Infrastructures Sécurisées</p>
+    <h1>Portail QCM — Auto-évaluation AIS</h1>
+    <p class="hero-copy">Tous les QCM de révision générés pour préparer les 3 blocs de compétences du titre professionnel, centralisés ici. Chaque QCM se passe hors ligne, corrige immédiatement et calcule un score par compétence. Ce portail est prévu pour grandir jusqu'à une trentaine de QCM au fil de la formation.</p>
+  </section>
+  <div class="layout">
+    <aside class="sidebar">
+      <section class="panel">
+        <h2 class="side-title">Navigation</h2>
+        <nav class="nav">
+          <ul>
+            <li><a href="#bloc1">Bloc 1 — Infrastructures</a></li>
+            <li><a href="#bloc2">Bloc 2 — Évolution</a></li>
+            <li><a href="#bloc3">Bloc 3 — Cybersécurité</a></li>
+          </ul>
+        </nav>
+      </section>
+      <section class="panel">
+        <h2 class="side-title">Source</h2>
+        <p class="meta"><code>QCM-AIS/index.html</code><br>2 QCM disponibles · capacité du portail : 30</p>
+      </section>
+    </aside>
+    <main class="main">
+      <section class="panel" id="bloc1">
+        <div class="native-source">
+  <h1>Bloc 1 — Administrer et sécuriser les infrastructures</h1>
+  <p class="subtitle">Bonnes pratiques d'administration, réseaux, systèmes, virtualisation.</p>
+
+  <span class="badge">2 QCM · 100 questions au total</span>
+
+  <div class="modules">
+    <a href="qcm-b1-01-fondamentaux-cours-personnels.html">
+      <span>
+        <span class="mtitle">01 · QCM Bloc 1 — Fondamentaux (cours personnels)</span>
+        <span class="msub">50 questions · réseaux Cisco, Debian/Lynis, EVE-NG/ELK, refonte SI Ouzbek Global</span>
+      </span>
+    </a>
+    <a href="qcm-b1-02-approfondi-guide-formateur.html">
+      <span>
+        <span class="mtitle">02 · QCM Bloc 1 — Approfondi (guide formateur)</span>
+        <span class="msub">50 questions · d'après le guide de révision du formateur (REAC/RE TP-01352)</span>
+      </span>
+    </a>
+  </div>
+
+  <p class="note">Conseil : commencez par le QCM Base pour valider les fondamentaux, puis enchaînez sur le Niveau Approfondi pour vous entraîner aux distinctions posées à l'oral.</p>
+        </div>
+      </section>
+
+      <section class="panel" id="bloc2">
+        <div class="native-source">
+  <h1>Bloc 2 — Concevoir et mettre en œuvre une solution</h1>
+  <p class="subtitle">En réponse à un besoin d'évolution de l'infrastructure.</p>
+  <span class="badge">0 QCM disponible</span>
+  <div class="modules">
+    <a class="empty" href="#">
+      <span>
+        <span class="mtitle">À venir</span>
+        <span class="msub">Sera ajouté ici une fois le Bloc 2 abordé en formation</span>
+      </span>
+    </a>
+  </div>
+        </div>
+      </section>
+
+      <section class="panel" id="bloc3">
+        <div class="native-source">
+  <h1>Bloc 3 — Participer à la gestion de la cybersécurité</h1>
+  <p class="subtitle">Analyse du niveau de sécurité et renforcement de la protection du SI.</p>
+  <span class="badge">0 QCM disponible</span>
+  <div class="modules">
+    <a class="empty" href="#">
+      <span>
+        <span class="mtitle">À venir</span>
+        <span class="msub">Sera ajouté ici une fois le Bloc 3 abordé en formation</span>
+      </span>
+    </a>
+  </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.nav a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.querySelectorAll('.nav a').forEach(function (item) { item.classList.remove('active'); });
+        link.classList.add('active');
+      });
+    });
+  });
+</script>
+</body>
+</html>
